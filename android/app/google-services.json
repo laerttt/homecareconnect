@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "214510889633",
+    "project_id": "homecareconnect-13d28",
+    "storage_bucket": "homecareconnect-13d28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214510889633:android:f151f4cb04ed3a18619ee0",
+        "android_client_info": {
+          "package_name": "com.example.homecareconnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwkLL6EAR8u_ZPiyBIFbRcgvTM4q1y4rQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
