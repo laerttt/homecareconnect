@@ -17,34 +17,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //testing db wrtiting
-    log('creating user...');
-    User usr = User('99', 'tikitaka',
-        name: 'Laert',
-        surname: 'Huti',
-        gender: 1,
-        age: 21,
-        address: 'Myslym Shyri');
-
-    // DatabaseReference x = FirebaseDatabase.instance.ref('users/${usr.id}');
-    // await x.set(usr.toJson());
-    log('out');
-    usr.writeUser();
-    log('uuuuu');
-    usr = User('100', 'takatiki',
-        name: 'kelvin',
-        surname: 'byca',
-        gender: 2,
-        age: 21,
-        address: 'rruga e u-dhi-shtes');
-    usr.writeUser();
-    // await ref.set(usr.toString());
-    // await ref.set({
-    //   'name': 'laert',
-    //   'surname': 'huti',
-    // });
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Modern'),
       home: LogInWidget(),
     );
   }
