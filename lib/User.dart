@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:firebase_database/firebase_database.dart';
+
 enum Genders { male, female, other }
 
 enum BloodTypes {
@@ -5,84 +10,57 @@ enum BloodTypes {
   aNegative,
   bPositive,
   bNegative,
-  oPositive,
-  oNegative,
   abPositive,
   abNegative,
+  oPositive,
+  oNegative,
 }
 
 class User {
-  dynamic _id;
-  dynamic _password;
+  late String id;
+  late String password;
 
-  String? _name;
-  String? _surname;
-  int? _age;
-  int? _gender;
-  int? _bloodType;
-  String? _address;
+  late String name;
+  String? surname;
+  int? age;
+  int? gender;
+  int? bloodType;
+  String? address;
 
-  User(
+  User(this.id, this.password,
       {gender,
       bloodType,
-      password,
-      String? name,
-      String? surname,
-      int? age,
-      id,
-      String? address}) {
-    _name = name;
-    _surname = surname;
-    _age = age;
-    _gender = gender;
-    _bloodType = bloodType;
-    _address = address;
-    password(password);
-    id(id);
+      required this.name,
+      required this.surname,
+      required this.age,
+      required this.address}) {
+    gender = gender;
+    bloodType = bloodType;
   }
 
-  //password
-  set password(x) => _password = x;
-  get password => _password;
-
-  //id
-  set id(x) => _id = x; //idk
-  get id => _id;
-
-  //gender
-  set bloodType(x) => _bloodType = x;
-  int? get gender => _gender;
-
-  //bloodtype
-  int? get bloodType => _bloodType;
-
-  //name
-  set name(String? x) => _name = x;
-  String? get name => _name;
-
-  //surname
-  set surname(String? x) => _surname = x;
-  String? get surname => _surname;
-
-  //address
-  set address(String? x) => _address = x;
-  String? get address => _address;
-
-  ///db struct
+  ///db json struct
   toJson() {
     return {
-      "Name": "$_name",
-      "Surname": "$_surname",
-      "Addresss": "$_address",
-      "Gender": "$_gender",
+      "Name": name,
+      "Surname": surname,
+      "Addresss": address,
+      "Gender": "$gender",
       "Bloodtype": "$bloodType",
-      "Age": "$_age",
-      "password": "$_password",
+      "Age": "$age",
+      "password": password,
     };
+  }
+
+  ///write to db
+  Future<void> writeUser() async {
+    log('ref...');
+    DatabaseReference x = FirebaseDatabase.instance.ref('users/$id');
+    log('writing...');
+    await x.set(toJson());
   }
 
   @override
   String toString() {
-    return '$_name $_surname';
+    return '$name $surname';
   }
 }
