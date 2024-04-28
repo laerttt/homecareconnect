@@ -17,9 +17,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Modern'),
+      theme: ThemeData(
+        fontFamily: 'Apple-Gothic',
+        colorScheme: theme.colorScheme.copyWith(
+          primary: Colors.black,
+          secondary: Colors.white,
+        ),
+      ),
       home: LogInWidget(),
     );
   }

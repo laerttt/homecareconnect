@@ -80,6 +80,9 @@ flutter:
     - family: Modern
       fonts:
         - asset: fonts/ModernAesthetic-DemoVersion-Regular.otf
+    - family: Apple-Gothic
+      fonts:
+        - asset: fonts/AppleGothic.ttf
     # - family: Schyler
     #   fonts:
     #     - asset: fonts/Schyler-Regular.ttf

@@ -8,7 +8,7 @@ class LogInWidget extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Log In',
+          'Register',
           style: TextStyle(
             fontSize: 40,
             color: Colors.black,
@@ -16,8 +16,7 @@ class LogInWidget extends StatelessWidget {
         ),
         centerTitle: true,
         toolbarHeight: 100,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-        elevation: 0,
+        backgroundColor: Colors.transparent,
       ),
       body: Form(
         // key: _formKey,
