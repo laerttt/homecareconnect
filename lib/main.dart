@@ -2,12 +2,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:homecareconnect/pages/log_in.dart';
-import 'firebase_options.dart';
+import 'package:homecareconnect/pages/home_page.dart';
+import 'firebase/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.ios);
   runApp(const MyApp());
 }
 
@@ -17,17 +17,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = ThemeData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Apple-Gothic',
-        colorScheme: theme.colorScheme.copyWith(
-          primary: Colors.black,
-          secondary: Colors.white,
-        ),
       ),
-      home: LogInWidget(),
+      home: HomeWidget(),
     );
   }
 }

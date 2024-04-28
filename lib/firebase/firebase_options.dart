@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -57,6 +54,18 @@ class DefaultFirebaseOptions {
     appId: '1:214510889633:android:f151f4cb04ed3a18619ee0',
     messagingSenderId: '214510889633',
     projectId: 'homecareconnect-13d28',
+    databaseURL: 'https://homecareconnect-13d28-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homecareconnect-13d28.appspot.com',
   );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyD_7NCQrimSJw9ownl1TB0RuNmaf8fNiXo',
+    appId: '1:214510889633:ios:e4137461b446040b619ee0',
+    messagingSenderId: '214510889633',
+    projectId: 'homecareconnect-13d28',
+    databaseURL: 'https://homecareconnect-13d28-default-rtdb.europe-west1.firebasedatabase.app',
+    storageBucket: 'homecareconnect-13d28.appspot.com',
+    iosBundleId: 'com.example.homecareconnect',
+  );
+
 }
