@@ -1,6 +1,6 @@
 import 'dart:async';
+// ignore: unused_import
 import 'dart:developer';
-
 import 'package:firebase_database/firebase_database.dart';
 
 enum Genders { male, female, other }
@@ -23,8 +23,8 @@ class User {
   late String name;
   String? surname;
   int? age;
-  int? gender;
-  int? bloodType;
+  dynamic gender;
+  dynamic bloodType;
   String? address;
 
   User(this.id, this.password,
@@ -37,6 +37,19 @@ class User {
     gender = gender;
     bloodType = bloodType;
   }
+
+  ///test constructor
+  User.testDummy()
+      : this(
+          'green420life', //id
+          'green420life', //pass
+          name: 'Denaro',
+          surname: 'Hoti',
+          age: 1,
+          address: 'Allias ngjit me finemin',
+          gender: Genders.male,
+          bloodType: BloodTypes.oNegative,
+        );
 
   ///db json struct
   toJson() {
@@ -51,12 +64,11 @@ class User {
     };
   }
 
-  ///write to db
-  Future<void> writeUser() async {
-    log('ref...');
+  ///     arg true => update
+  ///     arg false => write (default)
+  Future<void> writeUser({bool update = false}) async {
     DatabaseReference x = FirebaseDatabase.instance.ref('users/$id');
-    log('writing...');
-    await x.set(toJson());
+    (update) ? await x.update(toJson()) : await x.set(toJson());
   }
 
   @override

@@ -1,8 +1,8 @@
+// ignore: unused_import
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:homecareconnect/User.dart';
-import 'package:homecareconnect/pages/logIn.dart';
+import 'package:homecareconnect/pages/log_in.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {

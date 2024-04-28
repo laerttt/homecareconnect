@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LogInWidget extends StatelessWidget {
@@ -17,7 +16,7 @@ class LogInWidget extends StatelessWidget {
         ),
         centerTitle: true,
         toolbarHeight: 100,
-        backgroundColor: Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         elevation: 0,
       ),
       body: Form(
