@@ -1,9 +1,9 @@
-import 'dart:developer';
-import 'package:geolocator/geolocator.dart';
-import 'dart:async';
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:homecareconnect/objects/app_bar.dart';
+import 'package:homecareconnect/objects/current_location_button.dart';
 import 'package:homecareconnect/objects/drawer.dart';
+import 'package:homecareconnect/objects/google_map.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -12,89 +12,17 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<HomeWidget> {
-  // LocationData? x;
-
   @override
   Widget build(BuildContext context) {
-    String selectedPage = '';
     return Scaffold(
-      appBar: AppBar(
-        elevation: 5.0,
-        shadowColor: Colors.black,
-        centerTitle: true,
-        title: const Text(
-          'Map',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w900,
-          ),
-        ),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: const EdgeInsets.all(0.0),
-          children: <Widget>[
-            Container(
-              height: 150,
-              child: const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: Text(
-                  'Drawer Header',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 30,
-                  ),
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.message),
-              title: const Text('Messages'),
-              onTap: () {
-                setState(() {
-                  selectedPage = 'Messages';
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
-              onTap: () {
-                setState(() {
-                  selectedPage = 'Profile';
-                });
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                setState(() {
-                  selectedPage = 'Settings';
-                });
-              },
-            ),
-          ],
-        ),
-      ),
+      appBar: getAppBar(),
+      drawer: myDrawer(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        child: GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(-33.86, 151.20),
-            zoom: 16.0,
-          ),
-          markers: {
-            const Marker(
-              markerId: MarkerId('Marker'),
-              position: LatLng(-33.86, 151.20),
-            )
-          },
-        ),
+        height: MediaQuery.of(context).size.height + 100,
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: google_maps_widget(),
       ),
+      floatingActionButton: locationButton(),
     );
   }
 }
