@@ -1,7 +1,10 @@
+import 'dart:developer';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:homecareconnect/objects/app_bar.dart';
 
 class myDrawer extends StatefulWidget {
   const myDrawer({super.key});
@@ -22,6 +25,8 @@ class _myDrawerState extends State<myDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    double drawer_top_padding = 120;
+
     return Drawer(
       backgroundColor: Color.fromRGBO(0, 0, 0, 0.1),
       width: (MediaQuery.of(context).size.width / 2) + 10,
@@ -33,11 +38,19 @@ class _myDrawerState extends State<myDrawer> {
           bottomRight: Radius.circular(0),
         ),
       ),
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Stack(
         children: <Widget>[
+          BackdropFilter(
+            blendMode: BlendMode.dst,
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              height: 0,
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            ),
+          ),
           Container(
-            height: 116,
+            height: drawer_top_padding,
             alignment: Alignment.center,
             child: DrawerHeader(
               decoration: BoxDecoration(
@@ -46,7 +59,7 @@ class _myDrawerState extends State<myDrawer> {
               padding: EdgeInsets.all(0),
               margin: EdgeInsets.all(0),
               child: ListTile(
-                titleTextStyle: TextStyle(
+                titleTextStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
                   color: Colors.white,
@@ -56,7 +69,7 @@ class _myDrawerState extends State<myDrawer> {
                   color: Colors.white,
                   size: 50,
                 ),
-                title: const Text('Profile'),
+                title: const Text('Profili im'),
                 onTap: () {},
               ),
               // Text(
@@ -69,30 +82,98 @@ class _myDrawerState extends State<myDrawer> {
               // ),
             ),
           ),
-          BackdropFilter(
-            blendMode: BlendMode.dst,
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              height: 0,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          Container(
+            margin: EdgeInsets.fromLTRB(0, drawer_top_padding, 0, 0),
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(color: Colors.red),
+                  child: ListTile(
+                    title: const Text(
+                      'Kontakto mjekun',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16,
+                        backgroundColor: Colors.red,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    titleAlignment: ListTileTitleAlignment.center,
+                    leading: const Icon(
+                      Icons.local_hospital,
+                      size: 25,
+                      color: Colors.white,
+                    ),
+                    textColor: Colors.white,
+                    onTap: () {},
+                  ),
+                ),
+                ListTile(
+                  subtitle: Text('Nderrimi i veshkes...'),
+                  titleAlignment: ListTileTitleAlignment.center,
+                  leading: const Icon(
+                    Icons.notifications,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Njoftime',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.left,
+                  ),
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text(
+                    'Dokumenta',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.left,
+                  ),
+                  subtitle: const Text('Analizë gjaku...'),
+                  leading: const Icon(
+                    Icons.edit_document,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  titleAlignment: ListTileTitleAlignment.center,
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text(
+                    'Baza',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.left,
+                  ),
+                  leading: const Icon(
+                    Icons.settings,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  titleAlignment: ListTileTitleAlignment.center,
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
+                ListTile(
+                  subtitle: Text('Nderrimi i veshkes...'),
+                  titleAlignment: ListTileTitleAlignment.center,
+                  leading: const Icon(
+                    Icons.notifications,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Njoftime',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.left,
+                  ),
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
+              ],
             ),
-          ),
-          ListTile(
-            subtitle: Text('Nderrimi i veshkes...'),
-            titleAlignment: ListTileTitleAlignment.center,
-            leading: const Icon(
-              Icons.notifications,
-              size: 25,
-              color: Colors.white,
-            ),
-            title: const Text(
-              'Notifications',
-              style: TextStyle(fontWeight: FontWeight.w900),
-              textAlign: TextAlign.left,
-            ),
-            textColor: Colors.white,
-            onTap: () {},
           )
         ],
       ),

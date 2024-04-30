@@ -22,7 +22,7 @@ class _MyWidgetState extends State<HomeWidget> {
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: google_maps_widget(),
       ),
-      floatingActionButton: locationButton(),
+      floatingActionButton: current_location_button(),
     );
   }
 }
