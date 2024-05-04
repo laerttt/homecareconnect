@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:homecareconnect/components/app_bar.dart';
+import 'package:homecareconnect/components/drawer.dart';
 
 class LogInWidget extends StatelessWidget {
   const LogInWidget({super.key});
@@ -6,18 +8,8 @@ class LogInWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Register',
-          style: TextStyle(
-            fontSize: 40,
-            color: Colors.black,
-          ),
-        ),
-        centerTitle: true,
-        toolbarHeight: 100,
-        backgroundColor: Colors.transparent,
-      ),
+      appBar: getAppBar('Log In'),
+      drawer: myDrawer(),
       body: Form(
         // key: _formKey,
         child: Padding(
@@ -26,12 +18,10 @@ class LogInWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   // controller: emailController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Email"),
+                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Email"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
@@ -41,13 +31,11 @@ class LogInWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
                   // controller: passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), labelText: "Password"),
+                  decoration: const InputDecoration(border: OutlineInputBorder(), labelText: "Password"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -57,8 +45,7 @@ class LogInWidget extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
                 child: Center(
                   child: ElevatedButton(
                     onPressed: () {

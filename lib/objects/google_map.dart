@@ -28,7 +28,7 @@ class google_maps_widgetState extends State<google_maps_widget> {
       markers: {
         const Marker(
           markerId: MarkerId('Marker'),
-          position: LatLng(-33.86, 151.20),
+          position: LatLng(37.785834, -122.406417),
         )
       },
       padding: const EdgeInsets.only(bottom: 5, left: 10),

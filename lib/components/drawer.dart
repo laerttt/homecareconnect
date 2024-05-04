@@ -1,10 +1,12 @@
+// ignore: unused_import
 import 'dart:developer';
 import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:homecareconnect/objects/app_bar.dart';
+import 'package:homecareconnect/pages/home_page.dart';
+import 'package:homecareconnect/pages/log_in.dart';
+import 'package:homecareconnect/pages/sign_up.dart';
 
 class myDrawer extends StatefulWidget {
   const myDrawer({super.key});
@@ -28,25 +30,24 @@ class _myDrawerState extends State<myDrawer> {
     double drawer_top_padding = 120;
 
     return Drawer(
-      backgroundColor: Color.fromRGBO(0, 0, 0, 0.1),
       width: (MediaQuery.of(context).size.width / 2) + 10,
-      elevation: 5.0,
-      // shadowColor: Colors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(0),
           bottomRight: Radius.circular(0),
         ),
       ),
+      backgroundColor: Colors.transparent,
       child: Stack(
         children: <Widget>[
-          BackdropFilter(
-            blendMode: BlendMode.dst,
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              height: 0,
-              decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
+          ClipRect(
+            clipBehavior: Clip.hardEdge,
+            child: BackdropFilter(
+              blendMode: BlendMode.src,
+              filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+              ),
             ),
           ),
           Container(
@@ -72,14 +73,6 @@ class _myDrawerState extends State<myDrawer> {
                 title: const Text('Profili im'),
                 onTap: () {},
               ),
-              // Text(
-              //   'Get User Name',
-              //   style: TextStyle(
-              //     color: Colors.black,
-              //     fontWeight: FontWeight.w900,
-              //     fontSize: 30,
-              //   ),
-              // ),
             ),
           ),
           Container(
@@ -90,12 +83,12 @@ class _myDrawerState extends State<myDrawer> {
                 Container(
                   decoration: BoxDecoration(color: Colors.red),
                   child: ListTile(
+                    splashColor: Colors.transparent,
                     title: const Text(
                       'Kontakto mjekun',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
-                        backgroundColor: Colors.red,
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -110,6 +103,23 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                 ),
                 ListTile(
+                  splashColor: Colors.transparent,
+                  titleAlignment: ListTileTitleAlignment.center,
+                  leading: const Icon(
+                    Icons.medical_information,
+                    size: 25,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Mjekimet',
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                    textAlign: TextAlign.left,
+                  ),
+                  textColor: Colors.white,
+                  onTap: () {},
+                ),
+                ListTile(
+                  splashColor: Colors.transparent,
                   subtitle: Text('Nderrimi i veshkes...'),
                   titleAlignment: ListTileTitleAlignment.center,
                   leading: const Icon(
@@ -123,9 +133,13 @@ class _myDrawerState extends State<myDrawer> {
                     textAlign: TextAlign.left,
                   ),
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => LogInWidget()));
+                  },
                 ),
                 ListTile(
+                  splashColor: Colors.transparent,
                   title: const Text(
                     'Dokumenta',
                     style: TextStyle(fontWeight: FontWeight.w900),
@@ -142,6 +156,7 @@ class _myDrawerState extends State<myDrawer> {
                   onTap: () {},
                 ),
                 ListTile(
+                  splashColor: Colors.transparent,
                   title: const Text(
                     'Baza',
                     style: TextStyle(fontWeight: FontWeight.w900),
@@ -154,27 +169,30 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => signInWidget()));
+                  },
                 ),
                 ListTile(
-                  subtitle: Text('Nderrimi i veshkes...'),
+                  splashColor: Colors.transparent,
+                  title: const Text('Harta',
+                      style: TextStyle(fontWeight: FontWeight.w900),
+                      textAlign: TextAlign.left),
+                  leading: const Icon(Icons.map, size: 25, color: Colors.white),
                   titleAlignment: ListTileTitleAlignment.center,
-                  leading: const Icon(
-                    Icons.notifications,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                  title: const Text(
-                    'Njoftime',
-                    style: TextStyle(fontWeight: FontWeight.w900),
-                    textAlign: TextAlign.left,
-                  ),
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    if (context == HomeWidget()) {
+                    } else {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => HomeWidget()));
+                    }
+                  },
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

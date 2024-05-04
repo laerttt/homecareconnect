@@ -39,9 +39,9 @@ class _currentLocationButtonState extends State<current_location_button> {
         target: target,
         zoom: 14,
       );
+      log('$cameraPosition');
 
       GoogleMapController controller = await _controller.future;
-      log('message');
       await controller
           .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       setState(() {});

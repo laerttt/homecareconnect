@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:homecareconnect/objects/app_bar.dart';
-import 'package:homecareconnect/objects/current_location_button.dart';
-import 'package:homecareconnect/objects/drawer.dart';
+import 'package:homecareconnect/components/app_bar.dart';
+import 'package:homecareconnect/components/current_location_button.dart';
+import 'package:homecareconnect/components/drawer.dart';
 import 'package:homecareconnect/objects/google_map.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -15,15 +15,15 @@ class _MyWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
-      drawer: myDrawer(),
-      body: Container(
-        height: MediaQuery.of(context).size.height + 100,
-        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: google_maps_widget(),
-      ),
-      floatingActionButton: current_location_button(),
-    );
+        appBar: getAppBar('Harta'),
+        drawer: myDrawer(),
+        body: Container(
+          height: MediaQuery.of(context).size.height + 100,
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: google_maps_widget(),
+        ),
+        floatingActionButton: current_location_button(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startDocked);
   }
 }
 
