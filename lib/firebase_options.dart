@@ -65,6 +65,7 @@ class DefaultFirebaseOptions {
     projectId: 'homecareconnect-13d28',
     databaseURL: 'https://homecareconnect-13d28-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'homecareconnect-13d28.appspot.com',
+    iosClientId: '214510889633-rlv62rs7glmm8q6kap6qnrkd0k4ns8fd.apps.googleusercontent.com',
     iosBundleId: 'com.example.homecareconnect',
   );
 

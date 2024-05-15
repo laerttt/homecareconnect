@@ -20,9 +20,7 @@ class _currentLocationButtonState extends State<current_location_button> {
   }
 
   Future<Position> get_user_location() async {
-    await Geolocator.requestPermission()
-        .then((value) {})
-        .onError((error, stackTrace) {
+    await Geolocator.requestPermission().then((value) {}).onError((error, stackTrace) {
       log('error USER PERMISSION', stackTrace: stackTrace);
     });
     return await Geolocator.getCurrentPosition();
@@ -42,8 +40,7 @@ class _currentLocationButtonState extends State<current_location_button> {
       log('$cameraPosition');
 
       GoogleMapController controller = await _controller.future;
-      await controller
-          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      await controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       setState(() {});
     });
   }

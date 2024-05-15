@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
-import 'package:homecareconnect/pages/log_in.dart';
-import 'package:homecareconnect/pages/sign_up.dart';
+import 'package:homecareconnect/pages/profile_page.dart';
 
 class myDrawer extends StatefulWidget {
   const myDrawer({super.key});
@@ -71,7 +71,9 @@ class _myDrawerState extends State<myDrawer> {
                   size: 50,
                 ),
                 title: const Text('Profili im'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyProfileWidget()));
+                },
               ),
             ),
           ),
@@ -134,8 +136,7 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                   textColor: Colors.white,
                   onTap: () {
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => LogInWidget()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
                   },
                 ),
                 ListTile(
@@ -170,23 +171,19 @@ class _myDrawerState extends State<myDrawer> {
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => signInWidget()));
+                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => signInWidget()));
                   },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
-                  title: const Text('Harta',
-                      style: TextStyle(fontWeight: FontWeight.w900),
-                      textAlign: TextAlign.left),
+                  title: const Text('Harta', style: TextStyle(fontWeight: FontWeight.w900), textAlign: TextAlign.left),
                   leading: const Icon(Icons.map, size: 25, color: Colors.white),
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
                   onTap: () {
                     if (context == HomeWidget()) {
                     } else {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => HomeWidget()));
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
                     }
                   },
                 ),

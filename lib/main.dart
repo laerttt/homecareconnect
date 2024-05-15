@@ -2,8 +2,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:homecareconnect/pages/home_page.dart';
-import 'package:homecareconnect/pages/log_in.dart';
+import 'package:homecareconnect/pages/auth_page.dart';
 import 'firebase/firebase_options.dart';
 
 Future<void> main() async {
@@ -19,11 +18,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'Apple-Gothic',
-      ),
-      home: LogInWidget(),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.red,
+            selectionColor: Colors.red.shade200,
+            selectionHandleColor: Colors.red,
+          ),
+          fontFamily: 'Apple-Gothic',
+        ),
+        home: AuthPage());
   }
 }
