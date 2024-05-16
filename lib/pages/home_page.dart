@@ -32,6 +32,7 @@ class _MyWidgetState extends State<HomeWidget> {
         height: MediaQuery.of(context).size.height + 100,
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: GoogleMap(
+          myLocationEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
           },
@@ -70,7 +71,7 @@ class _MyWidgetState extends State<HomeWidget> {
       LatLng target = LatLng(lat, lon);
       CameraPosition cameraPosition = CameraPosition(
         target: target,
-        zoom: 16,
+        zoom: 18,
       );
 
       GoogleMapController controller = await _controller.future;
