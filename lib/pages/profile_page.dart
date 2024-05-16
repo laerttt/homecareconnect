@@ -12,27 +12,33 @@ class MyProfileWidget extends StatelessWidget {
     return Scaffold(
       drawer: myDrawer(),
       appBar: getAppBar('Profili im'),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('$user.email'),
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.black,
-                backgroundColor: Colors.white,
-                shape: RoundedRectangleBorder(),
-              ),
-              label: Text(
-                'Log Out',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
-              ),
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                signOut();
-              },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text('image placeholder'),
+                Column(
+                  children: [
+                    Text(
+                      'name',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Text(
+                      'surname',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                  ],
+                )
+              ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [Text('age: 24'), Text('data: data'), Text('data: data')],
+            ),
+            ListTile()
           ],
         ),
       ),
