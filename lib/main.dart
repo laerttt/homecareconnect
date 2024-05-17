@@ -2,6 +2,8 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:homecareconnect/objects/user.dart';
+import 'package:homecareconnect/objects/visit.dart';
 import 'package:homecareconnect/pages/auth_page.dart';
 import 'firebase/firebase_options.dart';
 
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    User user = User.testDummy();
+    log('${user.gender}');
+    user.writeUser();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
