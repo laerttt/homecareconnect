@@ -8,6 +8,8 @@ import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
 
+import '../pages/signup.dart';
+
 class myDrawer extends StatefulWidget {
   const myDrawer({super.key});
 
@@ -136,7 +138,7 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                   textColor: Colors.white,
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Register()));
                   },
                 ),
                 ListTile(
