@@ -13,7 +13,7 @@ class User {
 
   late String name;
   String? surname;
-  int? age;
+  DateTime age;
   dynamic gender;
   int? bloodType;
   String? address;
@@ -32,7 +32,7 @@ class User {
           'green420life', //pass
           name: 'Denaro',
           surname: 'Hoti',
-          age: 1,
+          age: DateTime(2000),
           address: 'Allias ngjit me finemin',
           gender: Genders.male,
           bloodType: BloodTypes.oNegative.index,
