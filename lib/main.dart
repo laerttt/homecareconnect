@@ -2,6 +2,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:homecareconnect/objects/clinic.dart';
 import 'package:homecareconnect/objects/user.dart';
 import 'package:homecareconnect/objects/visit.dart';
 import 'package:homecareconnect/pages/auth_page.dart';
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
     User user = User.testDummy();
     log('${user.gender}');
     user.writeUser();
+    Clinic clinic = Clinic.testDummy();
+    clinic.writeClinic();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(

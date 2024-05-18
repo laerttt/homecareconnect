@@ -5,16 +5,7 @@ import 'package:homecareconnect/objects/visit.dart';
 
 enum Genders { male, female, other }
 
-enum BloodTypes {
-  aPositive,
-  aNegative,
-  bPositive,
-  bNegative,
-  abPositive,
-  abNegative,
-  oPositive,
-  oNegative,
-}
+enum BloodTypes { aPositive, aNegative, bPositive, bNegative, abPositive, abNegative, oPositive, oNegative }
 
 class User {
   late String id;
@@ -30,19 +21,9 @@ class User {
   String? phoneNumber;
   List<Visit>? visits;
   List<String>? allergies;
+  List<String>? medicaments;
 
-  User(
-    this.id,
-    this.password, {
-    this.gender,
-    this.bloodType,
-    required this.name,
-    required this.surname,
-    required this.age,
-    required this.address,
-    this.visits = null,
-    this.allergies = null,
-  }) {}
+  User(this.id, this.password, {this.gender, this.bloodType, required this.name, required this.surname, required this.age, required this.address, this.visits = null, this.allergies = null, this.medicaments = null}) {}
 
   ///test constructor
   User.testDummy()
@@ -56,33 +37,12 @@ class User {
           gender: Genders.male,
           bloodType: BloodTypes.oNegative.index,
           visits: [
-            Visit(
-              visitID: '1',
-              clinicID: '1',
-              nurseID: '1',
-              description: 'cls',
-              userID: '1',
-            ),
-            Visit(
-              visitID: '2',
-              clinicID: '1',
-              nurseID: '1',
-              description: 'gle',
-              userID: '1',
-            ),
-            Visit(
-              visitID: '3',
-              clinicID: '1',
-              nurseID: '2',
-              description: 'gls',
-              userID: '1',
-            ),
+            Visit(visitID: '1', clinicID: '1', nurseID: '1', description: 'cls', userID: '1'),
+            Visit(visitID: '2', clinicID: '1', nurseID: '1', description: 'gle', userID: '1'),
+            Visit(visitID: '3', clinicID: '1', nurseID: '2', description: 'gls', userID: '1'),
           ],
-          allergies: [
-            'fëmrat',
-            'majmunët',
-            'qumesht',
-          ],
+          allergies: ['fëmrat', 'majmunët', 'qumesht'],
+          medicaments: ['Ibuprofen', 'Antibiotics', 'Insulin'],
         );
 
   ///db json struct
@@ -102,6 +62,7 @@ class User {
       },
       "Visits": getVisits(),
       "Allergies": getAllergies(),
+      "Medicaments": getMeds(),
     };
   }
 
@@ -162,6 +123,16 @@ class User {
       json.addEntries(entry.entries);
     }
     log('$json', name: 'allergies list log');
+    return json;
+  }
+
+  getMeds() {
+    Map json = {};
+    for (var i in medicaments!) {
+      final entry = {i: i};
+      json.addEntries(entry.entries);
+    }
+    log('$json', name: 'meds list log');
     return json;
   }
 
