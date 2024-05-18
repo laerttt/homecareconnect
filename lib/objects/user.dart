@@ -1,20 +1,11 @@
 import 'dart:async';
-// ignore: unused_import
 import 'dart:developer';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:homecareconnect/objects/visit.dart';
 
 enum Genders { male, female, other }
 
-enum BloodTypes {
-  aPositive,
-  aNegative,
-  bPositive,
-  bNegative,
-  abPositive,
-  abNegative,
-  oPositive,
-  oNegative,
-}
+enum BloodTypes { aPositive, aNegative, bPositive, bNegative, abPositive, abNegative, oPositive, oNegative }
 
 class User {
   late String id;
@@ -24,19 +15,15 @@ class User {
   String? surname;
   DateTime age;
   dynamic gender;
-  dynamic bloodType;
+  int? bloodType;
   String? address;
+  String? email;
+  String? phoneNumber;
+  List<Visit>? visits;
+  List<String>? allergies;
+  List<String>? medicaments;
 
-  User(this.id, this.password,
-      {gender,
-      bloodType,
-      required this.name,
-      required this.surname,
-      required this.age,
-      required this.address}) {
-    gender = gender;
-    bloodType = bloodType;
-  }
+  User(this.id, this.password, {this.gender, this.bloodType, required this.name, required this.surname, required this.age, required this.address, this.visits = null, this.allergies = null, this.medicaments = null}) {}
 
   ///test constructor
   User.testDummy()
@@ -48,20 +35,105 @@ class User {
           age: DateTime(2000),
           address: 'Allias ngjit me finemin',
           gender: Genders.male,
-          bloodType: BloodTypes.oNegative,
+          bloodType: BloodTypes.oNegative.index,
+          visits: [
+            Visit(visitID: '1', clinicID: '1', nurseID: '1', description: 'cls', userID: '1'),
+            Visit(visitID: '2', clinicID: '1', nurseID: '1', description: 'gle', userID: '1'),
+            Visit(visitID: '3', clinicID: '1', nurseID: '2', description: 'gls', userID: '1'),
+          ],
+          allergies: ['fëmrat', 'majmunët', 'qumesht'],
+          medicaments: ['Ibuprofen', 'Antibiotics', 'Insulin'],
         );
 
   ///db json struct
   toJson() {
     return {
-      "Name": name,
-      "Surname": surname,
-      "Addresss": address,
-      "Gender": "$gender",
-      "Bloodtype": "$bloodType",
+      "FullName": {
+        "Name": name,
+        "Surname": surname,
+      },
       "Age": "$age",
-      "password": password,
+      "Gender": getGender(),
+      "Bloodtype": getBloodType(),
+      "Addresss": address,
+      "Contact": {
+        "E-mail": email,
+        "PhoneNumber": phoneNumber,
+      },
+      "Visits": getVisits(),
+      "Allergies": getAllergies(),
+      "Medicaments": getMeds(),
     };
+  }
+
+  addVisit(Visit v) {
+    this.visits?.add(v);
+  }
+
+  getGender() {
+    switch (this.gender) {
+      case Genders.male:
+        return 'male';
+      case Genders.female:
+        return 'female';
+      case Genders.other:
+        return 'other';
+      default:
+        return 'not specified';
+    }
+  }
+
+  getBloodType() {
+    switch (this.bloodType) {
+      case 0:
+        return 'aPositive';
+      case 1:
+        return 'aNegative';
+      case 2:
+        return 'bPositive';
+      case 3:
+        return 'bNegative';
+      case 4:
+        return 'abPositive';
+      case 5:
+        return 'abNegative';
+      case 6:
+        return 'oPositive';
+      case 7:
+        return 'oNegative';
+      default:
+        return 'not specified';
+    }
+  }
+
+  getVisits() {
+    Map json = {};
+    for (var i in visits!) {
+      final entry = {i.visitID: i.toJson()};
+      json.addEntries(entry.entries);
+    }
+    log('$json', name: 'visit list log');
+    return json;
+  }
+
+  getAllergies() {
+    Map json = {};
+    for (var i in allergies!) {
+      final entry = {i: i};
+      json.addEntries(entry.entries);
+    }
+    log('$json', name: 'allergies list log');
+    return json;
+  }
+
+  getMeds() {
+    Map json = {};
+    for (var i in medicaments!) {
+      final entry = {i: i};
+      json.addEntries(entry.entries);
+    }
+    log('$json', name: 'meds list log');
+    return json;
   }
 
   ///     arg true => update

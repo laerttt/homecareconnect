@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 AppBar getAppBar(String title) {
   return AppBar(
-    actions: [
-      IconButton(
-        icon: Icon(Icons.logout),
-        onPressed: () {
-          FirebaseAuth.instance.signOut();
-        },
-      )
-    ],
+    // actions: [
+    //   IconButton(
+    //     icon: Icon(Icons.logout),
+    //     onPressed: () {
+    //       FirebaseAuth.instance.signOut();
+    //     },
+    //   )
+    // ],
     iconTheme: IconThemeData(color: Colors.white),
     backgroundColor: Colors.red,
     elevation: 5,

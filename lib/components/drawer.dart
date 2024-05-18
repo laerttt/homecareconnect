@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
+import 'package:homecareconnect/pages/upload_file_test.dart';
 
 import '../pages/signup.dart';
 
@@ -156,7 +157,9 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => myTestFilePicker()));
+                  },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
