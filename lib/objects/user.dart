@@ -115,7 +115,7 @@ class User {
       }
       return json;
     } else {
-      return 'no visits';
+      return 'null';
     }
   }
 
@@ -128,7 +128,7 @@ class User {
       }
       return json;
     } else {
-      return 'no allergies';
+      return 'null';
     }
   }
 
@@ -141,7 +141,7 @@ class User {
       }
       return json;
     }
-    return 'no medicaments';
+    return 'null';
   }
 
   ///     arg true => update
