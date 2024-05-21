@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:homecareconnect/objects/visit.dart';
 
@@ -13,17 +12,18 @@ class User {
 
   late String name;
   String? surname;
-  DateTime age;
+  DateTime? age;
   dynamic gender;
   int? bloodType;
   String? address;
   String? email;
   String? phoneNumber;
+
   List<Visit>? visits;
   List<String>? allergies;
   List<String>? medicaments;
 
-  User(this.id, this.password, {this.gender, this.bloodType, required this.name, required this.surname, required this.age, required this.address, this.visits = null, this.allergies = null, this.medicaments = null}) {}
+  User(this.id, this.password, {this.gender, this.bloodType, required this.name, required this.surname, this.age, this.address, this.visits = null, this.allergies = null, this.medicaments = null, this.phoneNumber}) {}
 
   ///test constructor
   User.testDummy()
@@ -107,33 +107,41 @@ class User {
   }
 
   getVisits() {
-    Map json = {};
-    for (var i in visits!) {
-      final entry = {i.visitID: i.toJson()};
-      json.addEntries(entry.entries);
+    if (visits != null) {
+      Map json = {};
+      for (var i in visits!) {
+        final entry = {i.visitID: i.toJson()};
+        json.addEntries(entry.entries);
+      }
+      return json;
+    } else {
+      return 'no visits';
     }
-    log('$json', name: 'visit list log');
-    return json;
   }
 
   getAllergies() {
-    Map json = {};
-    for (var i in allergies!) {
-      final entry = {i: i};
-      json.addEntries(entry.entries);
+    if (allergies != null) {
+      Map json = {};
+      for (var i in allergies!) {
+        final entry = {i: i};
+        json.addEntries(entry.entries);
+      }
+      return json;
+    } else {
+      return 'no allergies';
     }
-    log('$json', name: 'allergies list log');
-    return json;
   }
 
   getMeds() {
     Map json = {};
-    for (var i in medicaments!) {
-      final entry = {i: i};
-      json.addEntries(entry.entries);
+    if (medicaments != null) {
+      for (var i in medicaments!) {
+        final entry = {i: i};
+        json.addEntries(entry.entries);
+      }
+      return json;
     }
-    log('$json', name: 'meds list log');
-    return json;
+    return 'no medicaments';
   }
 
   ///     arg true => update
