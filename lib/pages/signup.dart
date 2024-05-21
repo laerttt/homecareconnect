@@ -97,6 +97,19 @@ class _RegisterState extends State<Register> {
       return option.contains(query.toLowerCase());
     });
   }
+  DateTime ageController = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: ageController,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != ageController) {
+      setState(() {
+        ageController = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

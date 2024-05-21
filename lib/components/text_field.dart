@@ -24,6 +24,7 @@ class myTextField extends StatelessWidget {
         textAlignVertical: TextAlignVertical.center,
         textAlign: TextAlign.justify,
         obscureText: obscureText,
+
         // controller: controller,
         decoration: InputDecoration(
           labelText: hintText,
