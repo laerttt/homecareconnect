@@ -94,6 +94,19 @@ class _RegisterState extends State<Register> {
       return option.contains(query.toLowerCase());
     });
   }
+  DateTime ageController = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: ageController,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != ageController) {
+      setState(() {
+        ageController = picked;
+      });
+    }
+  }
 
 
   @override
@@ -130,6 +143,7 @@ class _RegisterState extends State<Register> {
 
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: myTextField(
@@ -162,6 +176,42 @@ class _RegisterState extends State<Register> {
 
                           controller: firstNameController,
                           hintText: "Enter your mobile number "
+                      ),
+                    ),
+                    Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: 25.0),
+
+
+                      child: Row(
+                        children: [
+                          Expanded(
+
+
+
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+
+                              child: Text(
+                                'Select age',
+                                style:TextStyle(color: Colors.grey[500]) ,
+
+                              ),
+                            ),
+                          ),
+
+                          Expanded(
+
+                            child: Container(
+
+                              child: IconButton(
+                                icon: Icon(Icons.cake),
+
+                                onPressed: () => _selectDate(context),
+                              ),
+
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     Padding(
