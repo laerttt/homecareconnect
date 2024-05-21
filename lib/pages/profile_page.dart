@@ -1,14 +1,27 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/drawer.dart';
+import 'package:homecareconnect/pages/auth_page.dart';
 
-class MyProfileWidget extends StatelessWidget {
-  const MyProfileWidget({super.key});
+class MyProfileWidget extends StatefulWidget {
+  MyProfileWidget({super.key});
+
+  @override
+  State<MyProfileWidget> createState() => _MyProfileWidgetState();
+}
+
+class _MyProfileWidgetState extends State<MyProfileWidget> {
+  final user = FirebaseAuth.instance.currentUser!;
+  final ref = FirebaseDatabase.instance.ref();
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser!;
+    // final snapshot = aw÷ait ref.child('users/${user.uid}').get();
+    // log(snapshot.value.toString());
     return Scaffold(
       drawer: myDrawer(),
       appBar: getAppBar('Profili im'),
@@ -84,7 +97,10 @@ class MyProfileWidget extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.logout),
             title: Text('Log Out'),
-            onTap: () {},
+            onTap: () {
+              signOut();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AuthPage()));
+            },
           ),
         ),
       ),

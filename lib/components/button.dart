@@ -9,37 +9,27 @@ class myBaseButton extends StatelessWidget {
     super.key,
     required this.buttonText,
     this.onPressed,
-    this.IconButton= false,
-
-
+    this.IconButton = false,
   });
-
-
-
 
   @override
   Widget build(
-      BuildContext context,
-      )
-  {
+    BuildContext context,
+  ) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-
-        child:   ElevatedButton(
+        padding: const EdgeInsets.symmetric(horizontal: 30.0),
+        child: ElevatedButton(
           child: Text(
             buttonText,
-            style: TextStyle(color: Colors.white, fontSize: 22),
+            style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
           ),
           onPressed: () {
-          onPressed!();
-
+            onPressed!();
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.redAccent, // background color
-
-            elevation: 5,
+            backgroundColor: Colors.red, // background color
+            elevation: 1,
           ),
-        )
-    );
+        ));
   }
-  }
+}

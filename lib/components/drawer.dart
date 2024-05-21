@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
+import 'package:homecareconnect/pages/medicine_tracker.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
 import 'package:homecareconnect/pages/upload_file_test.dart';
 
@@ -121,7 +122,9 @@ class _myDrawerState extends State<myDrawer> {
                     textAlign: TextAlign.left,
                   ),
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MedicineTracker()));
+                  },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,

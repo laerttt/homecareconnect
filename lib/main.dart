@@ -8,6 +8,7 @@ import 'package:homecareconnect/pages/auth_page.dart';
 import 'package:homecareconnect/pages/clinic_signup.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/medicine_tracker.dart';
+import 'package:homecareconnect/pages/profile_page.dart';
 import 'package:homecareconnect/pages/signup.dart';
 import 'firebase/firebase_options.dart';
 
@@ -38,6 +39,6 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Apple-Gothic',
         ),
-        home: MedicineTracker());
+        home: AuthPage());
   }
 }

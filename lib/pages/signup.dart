@@ -9,7 +9,9 @@ import 'package:homecareconnect/components/drawer.dart';
 import 'package:homecareconnect/components/text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:homecareconnect/objects/user.dart' as myUser;
+import 'package:homecareconnect/pages/clinic_signup.dart';
 import 'package:homecareconnect/pages/home_page.dart';
+import 'package:homecareconnect/pages/log_in_page.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -97,13 +99,10 @@ class _RegisterState extends State<Register> {
       return option.contains(query.toLowerCase());
     });
   }
+
   DateTime ageController = DateTime.now();
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: ageController,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+    final DateTime? picked = await showDatePicker(context: context, initialDate: ageController, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
     if (picked != null && picked != ageController) {
       setState(() {
         ageController = picked;
@@ -115,225 +114,251 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: myDrawer(),
+      backgroundColor: Colors.grey[100],
       appBar: getAppBar("Sign Up "),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Form(
-            key: _formkey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: myTextField(controller: firstNameController, hintText: "Enter your first name"),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: myTextField(
-                    controller: surnameController,
-                    hintText: "Enter your last name",
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: myTextField(controller: emailController, hintText: "Enter your email "),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: myTextField(
-                    hintText: 'Password',
-                    controller: passwordController,
-                    obscureText: true,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: myTextField(controller: phoneController, hintText: "Enter your mobile number "),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Text(
-                            'Add medical files',
-                            style: TextStyle(color: Colors.grey[500]),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: IconButton(
-                            icon: Icon(Icons.attach_file),
-                            onPressed: () async {
-                              filesController = await FilePicker.platform.pickFiles(allowMultiple: true);
-                              if (filesController == null) {
-                                print("No file selected");
-                              } else {
-                                setState(() {});
-                                for (var element in filesController!.files) {
-                                  print(element.name);
-                                }
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Text(
-                            'Add known allergens',
-                            style: TextStyle(color: Colors.grey[500]),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          child: SearchAnchor(
-                            isFullScreen: false,
-                            builder: (BuildContext context, SearchController controller) {
-                              return IconButton(
-                                icon: const Icon(Icons.medical_information_rounded),
-                                onPressed: () {
-                                  controller.openView();
-                                },
-                              );
-                            },
-                            suggestionsBuilder: (BuildContext context, SearchController controller) async {
-                              _searchingWithQuery = controller.text;
-                              final List<String> options = (search(_searchingWithQuery!)).toList();
-
-                              // If another search happened after this one, throw away these options.
-                              // Use the previous options instead and wait for the newer request to
-                              // finish.
-                              if (_searchingWithQuery != controller.text) {
-                                return _lastOptions;
-                              }
-
-                              _lastOptions = List<ListTile>.generate(
-                                options.length,
-                                (int index) {
-                                  final String item = options[index];
-                                  return ListTile(
-                                    onTap: (null
-
-                                        ///add on tap for allergens
-                                        ),
-                                    title: Text(item),
-                                  );
-                                },
-                              );
-
-                              return _lastOptions;
-                            },
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Center(
-                    child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Container(
-                    // margin: EdgeInsets.fromLTRB(200, 20, 50, 0),
-                    child: myBaseButton(
-                      buttonText: "Register",
-                      onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Center(
-                                  child: CircularProgressIndicator(
-                                color: Colors.red,
-                              ));
-                            });
-                        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
-                          log('${u.user?.email}');
-                          await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
-                          var user = myUser.User(u.user!.uid, passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}");
-                          var usr = FirebaseAuth.instance.currentUser;
-                          usr?.updateDisplayName('${firstNameController.text.trim()} ${surnameController.text.trim()}');
-                          log(user.id);
-                          user.writeUser();
-                          Navigator.pop(context);
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
-                        }).catchError(
-                          (e) {
-                            //   showDialog<void>(
-                            //     context: context,
-                            //     barrierDismissible: false, // user must tap button!
-                            //     builder: (BuildContext context) {
-                            //       return AlertDialog(
-                            //         title: const Text('AlertDialog Title'),
-                            //         content: const SingleChildScrollView(
-                            //           child: ListBody(
-                            //             children: <Widget>[
-                            //               Text('This is a demo alert dialog.'),
-                            //               Text('Would you like to approve of this message?'),
-                            //             ],
-                            //           ),
-                            //         ),
-                            //         actions: <Widget>[
-                            //           TextButton(
-                            //             child: const Text('Approve'),
-                            //             onPressed: () {
-                            //               Navigator.of(context).pop();
-                            //             },
-                            //           ),
-                            //         ],
-                            //       );
-                            //     },
-                            //   );
-                            log(e.toString());
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                    ),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                  ),
-                )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Container(
-                    child: GestureDetector(
-                      onTap: () {
-                        log('message', name: 'Are you a clinic?');
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 90.0),
-                        child: Text(
-                          "Are you a clinic?",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline,
-                            decorationColor: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+        child: Column(
+          children: [
+            SizedBox(
+              height: 45,
             ),
-          ),
+            Image(image: AssetImage('icon/login_icon.png'), width: 85, color: Colors.red),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              child: Form(
+                key: _formkey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: myTextField(controller: firstNameController, hintText: "Enter your first name"),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myTextField(
+                        controller: surnameController,
+                        hintText: "Enter your last name",
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myTextField(controller: emailController, hintText: "Enter your email "),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myTextField(
+                        hintText: 'Password',
+                        controller: passwordController,
+                        obscureText: true,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: myTextField(controller: phoneController, hintText: "Enter your mobile number "),
+                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //           child: Text(
+                    //             'Add medical files',
+                    //             style: TextStyle(color: Colors.grey[500]),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           child: IconButton(
+                    //             icon: Icon(Icons.attach_file),
+                    //             onPressed: () async {
+                    //               filesController = await FilePicker.platform.pickFiles(allowMultiple: true);
+                    //               if (filesController == null) {
+                    //                 print("No file selected");
+                    //               } else {
+                    //                 setState(() {});
+                    //                 for (var element in filesController!.files) {
+                    //                   print(element.name);
+                    //                 }
+                    //               }
+                    //             },
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    //           child: Text(
+                    //             'Add known allergens',
+                    //             style: TextStyle(color: Colors.grey[500]),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       Expanded(
+                    //         child: Container(
+                    //           child: SearchAnchor(
+                    //             isFullScreen: false,
+                    //             builder: (BuildContext context, SearchController controller) {
+                    //               return IconButton(
+                    //                 icon: const Icon(Icons.medical_information_rounded),
+                    //                 onPressed: () {
+                    //                   controller.openView();
+                    //                 },
+                    //               );
+                    //             },
+                    //             suggestionsBuilder: (BuildContext context, SearchController controller) async {
+                    //               _searchingWithQuery = controller.text;
+                    //               final List<String> options = (search(_searchingWithQuery!)).toList();
+
+                    //               // If another search happened after this one, throw away these options.
+                    //               // Use the previous options instead and wait for the newer request to
+                    //               // finish.
+                    //               if (_searchingWithQuery != controller.text) {
+                    //                 return _lastOptions;
+                    //               }
+
+                    //               _lastOptions = List<ListTile>.generate(
+                    //                 options.length,
+                    //                 (int index) {
+                    //                   final String item = options[index];
+                    //                   return ListTile(
+                    //                     onTap: (null
+
+                    //                         ///add on tap for allergens
+                    //                         ),
+                    //                     title: Text(item),
+                    //                   );
+                    //                 },
+                    //               );
+
+                    //               return _lastOptions;
+                    //             },
+                    //           ),
+                    //         ),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                    Center(
+                        child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: Container(
+                        // margin: EdgeInsets.fromLTRB(200, 20, 50, 0),
+                        child: myBaseButton(
+                          buttonText: "Register",
+                          onPressed: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.red,
+                                  ));
+                                });
+                            await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
+                              log('${u.user?.email}');
+                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
+                              var user = myUser.User(u.user!.uid, passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}");
+                              var usr = FirebaseAuth.instance.currentUser;
+                              usr?.updateDisplayName('${firstNameController.text.trim()} ${surnameController.text.trim()}');
+                              log(user.id);
+                              user.writeUser();
+                              Navigator.pop(context);
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
+                            }).catchError(
+                              (e) {
+                                //   showDialog<void>(
+                                //     context: context,
+                                //     barrierDismissible: false, // user must tap button!
+                                //     builder: (BuildContext context) {
+                                //       return AlertDialog(
+                                //         title: const Text('AlertDialog Title'),
+                                //         content: const SingleChildScrollView(
+                                //           child: ListBody(
+                                //             children: <Widget>[
+                                //               Text('This is a demo alert dialog.'),
+                                //               Text('Would you like to approve of this message?'),
+                                //             ],
+                                //           ),
+                                //         ),
+                                //         actions: <Widget>[
+                                //           TextButton(
+                                //             child: const Text('Approve'),
+                                //             onPressed: () {
+                                //               Navigator.of(context).pop();
+                                //             },
+                                //           ),
+                                //         ],
+                                //       );
+                                //     },
+                                //   );
+                                log(e.toString());
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                      ),
+                    )),
+                    SizedBox(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ClinicRegister()));
+                            },
+                            child: Container(
+                              child: Text(
+                                "Are you a clinic?",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
+                            },
+                            child: Container(
+                              child: Text(
+                                "Log in?",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.blue,
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.blue,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
