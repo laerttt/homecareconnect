@@ -2,7 +2,10 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:homecareconnect/objects/clinic.dart';
+import 'package:homecareconnect/objects/user.dart';
 import 'package:homecareconnect/pages/auth_page.dart';
+import 'package:homecareconnect/pages/signup.dart';
 import 'firebase/firebase_options.dart';
 
 Future<void> main() async {
@@ -17,6 +20,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    User user = User.testDummy();
+    log('${user.gender}');
+    user.writeUser();
+    Clinic clinic = Clinic.testDummy();
+    clinic.writeClinic();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -27,6 +35,6 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Apple-Gothic',
         ),
-        home: AuthPage());
+        home: Register());
   }
 }

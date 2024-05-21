@@ -7,6 +7,9 @@ import 'package:flutter/widgets.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
+import 'package:homecareconnect/pages/upload_file_test.dart';
+
+import '../pages/signup.dart';
 
 class myDrawer extends StatefulWidget {
   const myDrawer({super.key});
@@ -62,7 +65,7 @@ class _myDrawerState extends State<myDrawer> {
               child: ListTile(
                 titleTextStyle: const TextStyle(
                   fontSize: 20,
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
                 leading: const Icon(
@@ -70,7 +73,7 @@ class _myDrawerState extends State<myDrawer> {
                   color: Colors.white,
                   size: 50,
                 ),
-                title: const Text('Profili im'),
+                title: const Text('My Profile'),
                 onTap: () {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyProfileWidget()));
                 },
@@ -87,7 +90,7 @@ class _myDrawerState extends State<myDrawer> {
                   child: ListTile(
                     splashColor: Colors.transparent,
                     title: const Text(
-                      'Kontakto mjekun',
+                      'Contact Doctor',
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
@@ -113,7 +116,7 @@ class _myDrawerState extends State<myDrawer> {
                     color: Colors.white,
                   ),
                   title: const Text(
-                    'Mjekimet',
+                    'Medicine',
                     style: TextStyle(fontWeight: FontWeight.w900),
                     textAlign: TextAlign.left,
                   ),
@@ -122,7 +125,6 @@ class _myDrawerState extends State<myDrawer> {
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
-                  subtitle: Text('Nderrimi i veshkes...'),
                   titleAlignment: ListTileTitleAlignment.center,
                   leading: const Icon(
                     Icons.notifications,
@@ -130,23 +132,22 @@ class _myDrawerState extends State<myDrawer> {
                     color: Colors.white,
                   ),
                   title: const Text(
-                    'Njoftime',
+                    'Notifications',
                     style: TextStyle(fontWeight: FontWeight.w900),
                     textAlign: TextAlign.left,
                   ),
                   textColor: Colors.white,
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Register()));
                   },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
                   title: const Text(
-                    'Dokumenta',
+                    'Documents',
                     style: TextStyle(fontWeight: FontWeight.w900),
                     textAlign: TextAlign.left,
                   ),
-                  subtitle: const Text('Analizë gjaku...'),
                   leading: const Icon(
                     Icons.edit_document,
                     size: 25,
@@ -154,12 +155,14 @@ class _myDrawerState extends State<myDrawer> {
                   ),
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => myTestFilePicker()));
+                  },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
                   title: const Text(
-                    'Baza',
+                    'Settings',
                     style: TextStyle(fontWeight: FontWeight.w900),
                     textAlign: TextAlign.left,
                   ),
@@ -171,12 +174,12 @@ class _myDrawerState extends State<myDrawer> {
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
                   onTap: () {
-                    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => signInWidget()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
                   },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,
-                  title: const Text('Harta', style: TextStyle(fontWeight: FontWeight.w900), textAlign: TextAlign.left),
+                  title: const Text('Map', style: TextStyle(fontWeight: FontWeight.w900), textAlign: TextAlign.left),
                   leading: const Icon(Icons.map, size: 25, color: Colors.white),
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
