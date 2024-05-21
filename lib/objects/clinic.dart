@@ -1,13 +1,14 @@
 import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:homecareconnect/objects/nurse.dart';
 
 class Clinic {
   String? clinicID;
   String? clinicName;
   List<Nurse>? employees;
-  List<String?>? adress;
+  LatLng? adress;
   List<String?>? emails;
   List<String?>? phoneNumbers;
 
@@ -20,14 +21,17 @@ class Clinic {
     this.phoneNumbers = null,
   }) {}
   Clinic.testDummy()
-      : this('123', 'klinika gjaku i krishtit',
-            adress: ['rruga e jezusit', 'rruga e kaurrav', 'rruga e berxollav'],
-            emails: ['gjakukrishtit@gmail.com', 'gjakukrishtit2@gmail.com', 'gjakukrishtit3@gmail.com'],
-            phoneNumbers: ['0696969699', '0696969699', '0696969699'],
-            employees: [Nurse.testDummy(), Nurse.testDummy(1), Nurse.testDummy(2)]);
+      : this(
+          '123',
+          'klinika gjaku i krishtit',
+          adress: LatLng(0, 0),
+          emails: ['gjakukrishtit@gmail.com', 'gjakukrishtit2@gmail.com', 'gjakukrishtit3@gmail.com'],
+          phoneNumbers: ['0696969699', '0696969699', '0696969699'],
+          employees: [Nurse.testDummy(), Nurse.testDummy(1), Nurse.testDummy(2)],
+        );
 
-  addAdress(String a) {
-    adress?.add(a);
+  addAdress(LatLng a) {
+    adress = a;
   }
 
   addEmployee(Nurse a) {
@@ -44,10 +48,11 @@ class Clinic {
 
   getAdress() {
     Map json = {};
-    for (var i in adress!) {
-      final entry = {"Adress ${adress?.indexOf(i)}": i};
-      json.addEntries(entry.entries);
-    }
+    final entry = {
+      "lat": adress?.latitude,
+      "lon": adress?.longitude,
+    };
+    json.addEntries(entry.entries);
     return json;
   }
 
@@ -75,7 +80,6 @@ class Clinic {
       final entry = {i.nurseID: i.toJsonClinc()};
       json.addEntries(entry.entries);
     }
-    log('$json', name: 'nurse list log');
     return json;
   }
 

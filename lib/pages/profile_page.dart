@@ -28,7 +28,7 @@ class MyProfileWidget extends StatelessWidget {
                         size: 90,
                       )),
                   Text(
-                    'John Doe',
+                    '${user.displayName}',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w500,
