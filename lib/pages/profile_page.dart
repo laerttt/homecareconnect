@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/drawer.dart';
@@ -50,13 +47,27 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                         Icons.account_circle,
                         size: 90,
                       )),
-                  Text(
-                    '${currentUser?.name.capitalize()} ${currentUser?.surname.toString().capitalize()}',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${currentUser?.name.capitalize()} ${currentUser?.surname.toString().capitalize()}',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      Text(
+                        (currentUser?.email != null) ? '${currentUser?.email}' : 'No email address',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      Text(
+                        (currentUser?.phoneNumber != null) ? '${currentUser?.phoneNumber}' : 'No phone number',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -67,23 +78,25 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Age: ${currentUser?.getAge()}'),
-                    Text('Gender:${(currentUser?.getGender()).toString().capitalize()}'),
-                    Text('Blood Type: ${(currentUser?.getBloodType()).toString().capitalize()}'),
+                    Text((currentUser?.age == null) ? 'Age: N/A' : 'Age: ${currentUser?.getAge()}'),
+                    Text((currentUser?.gender == null) ? 'Gender: N/A' : 'Gender:${(currentUser?.getGender()).toString().capitalize()}'),
+                    Text((currentUser?.bloodType == null) ? 'Bloodtype: N/A' : 'Bloodtype: ${(currentUser?.getBloodType()).toString().capitalize()}'),
                   ],
                 ),
               ),
             ),
             Divider(),
-            Text((currentUser?.email != null) ? '${currentUser?.email}' : 'No email address'),
             ListTile(
-              leading: Icon(Icons.edit_square),
+              leading: Icon(
+                Icons.edit_square,
+                color: Colors.red,
+              ),
               title: Text('Edit Profile'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.healing_outlined),
-              title: Text('Health Issues'),
+              leading: Icon(Icons.medication_liquid),
+              title: Text('Medicaments'),
               onTap: () {},
             ),
             ListTile(
@@ -101,13 +114,26 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Color.fromARGB(255, 224, 61, 49),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: Colors.grey,
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
           child: ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Log Out'),
+            leading: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            title: Text(
+              'Log Out',
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900),
+            ),
             onTap: () {
               signOut();
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AuthPage()));

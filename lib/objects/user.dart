@@ -17,12 +17,23 @@ Future<User> toObject(uid) async {
   var name = ((json['FullName'])['Name']).toString();
   var surname = ((json['FullName'])['Surname']).toString();
   var age = json['Age'].toString();
-  var gender;
-  var bloodtype;
-  var address;
-  var email;
-  var phoneNumber;
-  return User.testDummy();
+  var gender = json['Gender'].toString();
+  log(json['Bloodtype'].toString());
+  var bloodtype = json['Bloodtype'].toString();
+  var address = json['Address'].toString();
+  var email = ((json['Contact'])['E-mail']).toString();
+  var phoneNumber = ((json['Contact'])['PhoneNumber']).toString();
+  return User(
+    id,
+    name: name,
+    surname: surname,
+    age: DateTime.tryParse(age.trim()),
+    gender: gender,
+    bloodType: bloodtype,
+    address: address,
+    email: email,
+    phoneNumber: phoneNumber,
+  );
 }
 
 class User {
@@ -32,7 +43,7 @@ class User {
   String? surname;
   DateTime? age;
   dynamic gender;
-  int? bloodType;
+  dynamic bloodType;
   String? address;
   String? email;
   String? phoneNumber;
@@ -54,6 +65,7 @@ class User {
     this.medicaments = null,
     this.phoneNumber = null,
     this.email = null,
+    this.address = null,
   }) {}
 
   ///test constructor
@@ -114,7 +126,7 @@ class User {
       case Genders.other:
         return 'other';
       default:
-        return 'not specified';
+        return null;
     }
   }
 
@@ -137,7 +149,7 @@ class User {
       case 7:
         return 'oNegative';
       default:
-        return 'not specified';
+        return null;
     }
   }
 
