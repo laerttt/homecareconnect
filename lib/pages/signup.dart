@@ -268,7 +268,7 @@ class _RegisterState extends State<Register> {
                             await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
                               log('${u.user?.email}');
                               await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
-                              var user = myUser.User(u.user!.uid, passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}");
+                              var user = myUser.User(u.user!.uid, password: passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}", email: emailController.text.trim());
                               var usr = FirebaseAuth.instance.currentUser;
                               usr?.updateDisplayName('${firstNameController.text.trim()} ${surnameController.text.trim()}');
                               log(user.id);

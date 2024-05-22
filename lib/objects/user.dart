@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:homecareconnect/objects/visit.dart';
 
@@ -6,10 +7,27 @@ enum Genders { male, female, other }
 
 enum BloodTypes { aPositive, aNegative, bPositive, bNegative, abPositive, abNegative, oPositive, oNegative }
 
+Future<User> toObject(uid) async {
+  var json;
+  late final ref = FirebaseDatabase.instance.ref();
+  final snapshot = await ref.child('users/$uid').get();
+  (snapshot.exists) ? json = (snapshot.value as Map) : log('${snapshot.exists}', name: 'snapshot.exists status');
+  log(((json['FullName'])['Name']).toString());
+  var id = uid;
+  var name = ((json['FullName'])['Name']).toString();
+  var surname = ((json['FullName'])['Surname']).toString();
+  var age = json['Age'].toString();
+  var gender;
+  var bloodtype;
+  var address;
+  var email;
+  var phoneNumber;
+  return User.testDummy();
+}
+
 class User {
   late String id;
-  late String password;
-
+  late String? password;
   late String name;
   String? surname;
   DateTime? age;
@@ -23,17 +41,28 @@ class User {
   List<String>? allergies;
   List<String>? medicaments;
 
-  User(this.id, this.password, {this.gender, this.bloodType, required this.name, required this.surname, this.age, this.address, this.visits = null, this.allergies = null, this.medicaments = null, this.phoneNumber}) {}
+  User(
+    this.id, {
+    this.password,
+    this.gender,
+    this.bloodType,
+    required this.name,
+    required this.surname,
+    this.age,
+    this.visits = null,
+    this.allergies = null,
+    this.medicaments = null,
+    this.phoneNumber = null,
+    this.email = null,
+  }) {}
 
   ///test constructor
   User.testDummy()
       : this(
           'green420life', //id
-          'green420life', //pass
           name: 'Denaro',
           surname: 'Hoti',
           age: DateTime(2000),
-          address: 'Allias ngjit me finemin',
           gender: Genders.male,
           bloodType: BloodTypes.oNegative.index,
           visits: [
@@ -68,6 +97,12 @@ class User {
 
   addVisit(Visit v) {
     this.visits?.add(v);
+  }
+
+  getAge() {
+    var currentYear = (DateTime.now()).toString().replaceRange(4, null, '').trim();
+    var year = this.age.toString().replaceRange(4, null, '').trim();
+    return int.parse(currentYear) - int.parse(year);
   }
 
   getGender() {

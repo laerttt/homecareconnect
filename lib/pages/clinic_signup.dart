@@ -1,10 +1,15 @@
+import 'dart:developer';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/button.dart';
 import 'package:homecareconnect/components/drawer.dart';
 import 'package:homecareconnect/components/text_field.dart';
+import 'package:homecareconnect/objects/clinic.dart';
+import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/signup.dart';
 
 class ClinicRegister extends StatefulWidget {
@@ -111,9 +116,55 @@ class _RegisterState extends State<ClinicRegister> {
                             // margin: EdgeInsets.fromLTRB(200, 20, 50, 0),
                             child: myBaseButton(
                               buttonText: "Register",
-
-                              //onPressed: func;
-                              /// method for register here
+                              onPressed: () async {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Center(
+                                          child: CircularProgressIndicator(
+                                        color: Colors.red,
+                                      ));
+                                    });
+                                await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
+                                  await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((c) {
+                                    var clinc = Clinic(c.user?.uid, passwordController.text.trim(), emails: ['${emailController.text.trim()}'], phoneNumbers: [phoneController.text.trim()]);
+                                    var usr = FirebaseAuth.instance.currentUser;
+                                    usr?.updateDisplayName('${clinicNameController.text.trim()}');
+                                    clinc.writeClinic();
+                                    Navigator.pop(context);
+                                  });
+                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
+                                }).catchError(
+                                  (e) {
+                                    //   showDialog<void>(
+                                    //     context: context,
+                                    //     barrierDismissible: false, // user must tap button!
+                                    //     builder: (BuildContext context) {
+                                    //       return AlertDialog(
+                                    //         title: const Text('AlertDialog Title'),
+                                    //         content: const SingleChildScrollView(
+                                    //           child: ListBody(
+                                    //             children: <Widget>[
+                                    //               Text('This is a demo alert dialog.'),
+                                    //               Text('Would you like to approve of this message?'),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //         actions: <Widget>[
+                                    //           TextButton(
+                                    //             child: const Text('Approve'),
+                                    //             onPressed: () {
+                                    //               Navigator.of(context).pop();
+                                    //             },
+                                    //           ),
+                                    //         ],
+                                    //       );
+                                    //     },
+                                    //   );
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              },
                             ),
 
                             width: MediaQuery.of(context).size.width,

@@ -5,7 +5,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/drawer.dart';
+import 'package:homecareconnect/objects/user.dart' as myUser;
 import 'package:homecareconnect/pages/auth_page.dart';
+import 'package:homecareconnect/string_extension.dart';
 
 class MyProfileWidget extends StatefulWidget {
   MyProfileWidget({super.key});
@@ -15,16 +17,24 @@ class MyProfileWidget extends StatefulWidget {
 }
 
 class _MyProfileWidgetState extends State<MyProfileWidget> {
-  final user = FirebaseAuth.instance.currentUser!;
-  final ref = FirebaseDatabase.instance.ref();
-
   @override
   Widget build(BuildContext context) {
-    // final snapshot = aw÷ait ref.child('users/${user.uid}').get();
-    // log(snapshot.value.toString());
+    final user = FirebaseAuth.instance.currentUser!;
+    return FutureBuilder(
+        future: myUser.toObject(user.uid),
+        builder: (BuildContext context, AsyncSnapshot<myUser.User> snapshot) {
+          if (!snapshot.hasData) return Container(); // still loading
+          // alternatively use snapshot.connectionState != ConnectionState.done
+          final myUser.User? currentUser = snapshot.data;
+          return profileScaffold(currentUser, context);
+          // return a widget here (you have to return a widget to the builder)
+        });
+  }
+
+  Scaffold profileScaffold(myUser.User? currentUser, BuildContext context) {
     return Scaffold(
       drawer: myDrawer(),
-      appBar: getAppBar('Profili im'),
+      appBar: getAppBar('My Profile'),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -41,7 +51,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                         size: 90,
                       )),
                   Text(
-                    '${user.displayName}',
+                    '${currentUser?.name.capitalize()} ${currentUser?.surname.toString().capitalize()}',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w500,
@@ -57,14 +67,15 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Age: 24'),
-                    Text('Gender: Male'),
-                    Text('Blood Type: A+'),
+                    Text('Age: ${currentUser?.getAge()}'),
+                    Text('Gender:${(currentUser?.getGender()).toString().capitalize()}'),
+                    Text('Blood Type: ${(currentUser?.getBloodType()).toString().capitalize()}'),
                   ],
                 ),
               ),
             ),
             Divider(),
+            Text((currentUser?.email != null) ? '${currentUser?.email}' : 'No email address'),
             ListTile(
               leading: Icon(Icons.edit_square),
               title: Text('Edit Profile'),
