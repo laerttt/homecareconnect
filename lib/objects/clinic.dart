@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:homecareconnect/objects/nurse.dart';
 
@@ -11,8 +12,7 @@ class Clinic {
   LatLng adress;
   List<String?>? emails;
   List<String?>? phoneNumbers;
-  final int? minOnDuty=10;
-
+  final int? minOnDuty = 10;
 
   Clinic(
     this.clinicID,
@@ -127,5 +127,46 @@ class Clinic {
         "Phone": getPhoneNumbers(),
       },
     };
+  }
+
+  static Future<Clinic> toObject(uid) async {
+    var json;
+    late final ref = FirebaseDatabase.instance.ref();
+    final snapshot = await ref.child('clinics/$uid').get();
+    (snapshot.exists) ? json = (snapshot.value as Map) : log('${snapshot.exists}', name: 'snapshot.exists status');
+    var id = uid;
+    var clinicName = (json['Clinic Name']).toString();
+    var address = LatLng(double.parse((json['Adress'])['lat'].toString().trim()), double.parse((json['Adress'])['lon'].toString().trim()));
+    List<String> email = [];
+    for (var f in (snapshot.child('Contact').child('Email').children)) {
+      email.add(f.value.toString());
+    }
+    List<String> phone = [];
+    for (var f in (snapshot.child('Contact').child('Phone').children)) {
+      phone.add(f.value.toString());
+    }
+    List<Nurse> employees = [];
+    for (var f in (snapshot.child('Employees').children)) {
+      employees.add(
+        Nurse(f.key,
+            name: f.child('FullName').child('Name').value.toString().trim(),
+            surname: f.child('FullName').child('Surname').value.toString().trim(),
+            age: int.parse(f.child('Age').value.toString().trim()),
+            email: f.child('Contact').child('Email').value.toString().trim(),
+            gender: f.child('Gender').value.toString().trim(),
+            license: f.child('License').value.toString().trim(),
+            phoneNumber: f.child('Contact').child('phone').value.toString().trim()),
+      );
+    }
+    var n = employees[0];
+    log(n.toJson().toString(), name: 'aaaaaaaaaaaaaaaaa');
+    return Clinic(
+      id,
+      clinicName,
+      adress: address,
+      emails: email,
+      phoneNumbers: phone,
+      employees: employees,
+    );
   }
 }
