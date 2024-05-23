@@ -4,6 +4,7 @@ class Visit {
   String? nurseID;
   String? clinicID;
   String? description;
+  int? billable;
 
   Visit({
     required this.visitID,

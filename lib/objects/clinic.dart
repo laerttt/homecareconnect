@@ -11,6 +11,8 @@ class Clinic {
   LatLng? adress;
   List<String?>? emails;
   List<String?>? phoneNumbers;
+  final int? minOnDuty=10;
+
 
   Clinic(
     this.clinicID,
