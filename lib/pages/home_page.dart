@@ -40,6 +40,13 @@ class _MyWidgetState extends State<HomeWidget> {
                 title: "Klinika 1",
                 snippet: "Klinika test",
               ),
+              onTap: () {
+                // showModalBottomSheet(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       return MarkerInfo();
+                //     });
+              },
             ),
             Marker(
               markerId: MarkerId('klinika 2'),

@@ -105,7 +105,28 @@ class _myDrawerState extends State<myDrawer> {
                       color: Colors.white,
                     ),
                     textColor: Colors.white,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Stack(
+                              children: [
+                                Divider(
+                                  indent: (MediaQuery.of(context).size.width / 2) - 30,
+                                  endIndent: (MediaQuery.of(context).size.width / 2) - 30,
+                                  thickness: 3,
+                                ),
+                                Container(
+                                  child: ListView(
+                                      //TODO: #9 getClinics()
+                                      // children: getClinics(),
+                                      ),
+                                ),
+                              ],
+                            );
+                          });
+                    },
                   ),
                 ),
                 ListTile(
