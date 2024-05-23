@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+
 class Visit {
   String? visitID;
   String? userID;
@@ -14,13 +16,17 @@ class Visit {
     required this.userID,
   });
 
-  Map toJson() {
-    Map json = {
+  toJson() {
+    return {
       "Clinic ID": clinicID,
       "Nurse ID": nurseID,
       "User ID": userID,
       "Description": description,
     };
-    return json;
+  }
+
+  wrtieDB({bool update = false}) async {
+    DatabaseReference x = FirebaseDatabase.instance.ref('visits/$visitID');
+    (update) ? await x.update(toJson()) : await x.set(toJson());
   }
 }

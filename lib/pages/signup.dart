@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:homecareconnect/validators.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/button.dart';
@@ -265,47 +266,57 @@ class _RegisterState extends State<Register> {
                                     color: Colors.red,
                                   ));
                                 });
-                            await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
-                              log('${u.user?.email}');
-                              await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
-                              var user = myUser.User(u.user!.uid, passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}");
-                              var usr = FirebaseAuth.instance.currentUser;
-                              usr?.updateDisplayName('${firstNameController.text.trim()} ${surnameController.text.trim()}');
-                              log(user.id);
-                              user.writeUser();
-                              Navigator.pop(context);
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
-                            }).catchError(
-                              (e) {
-                                //   showDialog<void>(
-                                //     context: context,
-                                //     barrierDismissible: false, // user must tap button!
-                                //     builder: (BuildContext context) {
-                                //       return AlertDialog(
-                                //         title: const Text('AlertDialog Title'),
-                                //         content: const SingleChildScrollView(
-                                //           child: ListBody(
-                                //             children: <Widget>[
-                                //               Text('This is a demo alert dialog.'),
-                                //               Text('Would you like to approve of this message?'),
-                                //             ],
-                                //           ),
-                                //         ),
-                                //         actions: <Widget>[
-                                //           TextButton(
-                                //             child: const Text('Approve'),
-                                //             onPressed: () {
-                                //               Navigator.of(context).pop();
-                                //             },
-                                //           ),
-                                //         ],
-                                //       );
-                                //     },
-                                //   );
-                                log(e.toString());
+                            if (validateEmail(emailController.text.trim()) == null && validatePassword(passwordController.text.trim()) == null && phoneNumberValidator(emailController.text.trim()) == null) {
+                              await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
+                                log('${u.user?.email}');
+                                await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
+                                var user = myUser.User(u.user!.uid, password: passwordController.text.trim(), name: '${firstNameController.text.trim()}', surname: '${surnameController.text.trim()}', phoneNumber: "${phoneController.text.trim()}", email: emailController.text.trim());
+                                var usr = FirebaseAuth.instance.currentUser;
+                                usr?.updateDisplayName('${firstNameController.text.trim()} ${surnameController.text.trim()}');
+                                log(user.id);
+                                user.writeUser();
                                 Navigator.pop(context);
-                              },
-                            );
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
+                              }).catchError(
+                                (e) {
+                                  //   showDialog<void>(
+                                  //     context: context,
+                                  //     barrierDismissible: false, // user must tap button!
+                                  //     builder: (BuildContext context) {
+                                  //       return AlertDialog(
+                                  //         title: const Text('AlertDialog Title'),
+                                  //         content: const SingleChildScrollView(
+                                  //           child: ListBody(
+                                  //             children: <Widget>[
+                                  //               Text('This is a demo alert dialog.'),
+                                  //               Text('Would you like to approve of this message?'),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //         actions: <Widget>[
+                                  //           TextButton(
+                                  //             child: const Text('Approve'),
+                                  //             onPressed: () {
+                                  //               Navigator.of(context).pop();
+                                  //             },
+                                  //           ),
+                                  //         ],
+                                  //       );
+                                  //     },
+                                  //   );
+                                  log(e.toString());
+                                  Navigator.pop(context);
+                                },
+                              );
+                            } else {
+                              if (validateEmail(emailController.text.trim()) != null) {
+                                //TODO: #5 incorrect email address pop up
+                              } else if (validatePassword(passwordController.text.trim()) == null) {
+                                //TODO: #7 incorrect password pop up
+                              } else if (phoneNumberValidator(emailController.text.trim()) == null) {
+                                //TODO: #8 incorrect phone number pop up
+                              }
+                            }
                           },
                         ),
                         width: MediaQuery.of(context).size.width,
@@ -341,7 +352,7 @@ class _RegisterState extends State<Register> {
                             },
                             child: Container(
                               child: Text(
-                                "Log in?",
+                                "Log in here",
                                 style: TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.blue,
@@ -370,34 +381,27 @@ class _RegisterState extends State<Register> {
       case "account-exists-with-different-credential":
       case "email-already-in-use":
         return "Email already used. Go to login page.";
-        break;
       case "ERROR_WRONG_PASSWORD":
       case "wrong-password":
         return "Wrong email/password combination.";
-        break;
       case "ERROR_USER_NOT_FOUND":
       case "user-not-found":
         return "No user found with this email.";
-        break;
       case "ERROR_USER_DISABLED":
       case "user-disabled":
         return "User disabled.";
-        break;
       case "ERROR_TOO_MANY_REQUESTS":
       case "operation-not-allowed":
         return "Too many requests to log into this account.";
-        break;
       case "ERROR_OPERATION_NOT_ALLOWED":
       case "operation-not-allowed":
         return "Server error, please try again later.";
-        break;
+
       case "ERROR_INVALID_EMAIL":
       case "invalid-email":
         return "Email address is invalid.";
-        break;
       default:
         return "Login failed. Please try again.";
-        break;
     }
   }
 }

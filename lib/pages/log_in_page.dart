@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/drawer.dart';
 import 'package:homecareconnect/components/text_field.dart';
-import 'package:homecareconnect/pages/clinic_signup.dart';
 import 'package:homecareconnect/pages/signup.dart';
 
 class MyLogInWidget extends StatefulWidget {
