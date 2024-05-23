@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homecareconnect/components/app_bar.dart';
+import 'package:homecareconnect/components/drawer.dart';
 import 'package:homecareconnect/components/text_field.dart';
+import 'package:homecareconnect/pages/signup.dart';
 
 class MyLogInWidget extends StatefulWidget {
   const MyLogInWidget({super.key});
@@ -23,6 +25,7 @@ class _MyLogInWidgetState extends State<MyLogInWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: myDrawer(),
       appBar: getAppBarBlack('Log In'),
       backgroundColor: Colors.grey[100],
       body: SafeArea(
@@ -48,11 +51,10 @@ class _MyLogInWidgetState extends State<MyLogInWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width / 2 - 35,
+                  width: 250,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(),
                     ),
                     icon: Icon(
                       Icons.login,
@@ -70,28 +72,29 @@ class _MyLogInWidgetState extends State<MyLogInWidget> {
                     onPressed: signIn,
                   ),
                 ),
-                SizedBox(width: 20),
-                // SizedBox(
-                //   width: MediaQuery.of(context).size.width / 2 - 35,
-                //   child: ElevatedButton.icon(
-                //     style: ElevatedButton.styleFrom(
-                //       foregroundColor: Colors.black,
-                //       backgroundColor: Colors.white,
-                //       shape: RoundedRectangleBorder(),
-                //     ),
-                //     icon: Icon(Icons.login, size: 16),
-                //     label: Text(
-                //       'Sign In',
-                //       style: TextStyle(
-                //         fontSize: 17,
-                //         color: Colors.black,
-                //       ),
-                //     ),
-                //     onPressed: signIn,
-                //   ),
-                // ),
               ],
             ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Register()));
+                },
+                child: Center(
+                  // padding: const EdgeInsets.symmetric(horizontal: 90.0),
+                  child: Text(
+                    "Register here",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.blue,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ]),
         ),
       ),

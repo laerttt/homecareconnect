@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
+import 'package:homecareconnect/pages/medicine_tracker.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
 import 'package:homecareconnect/pages/upload_file_test.dart';
 
@@ -104,7 +105,28 @@ class _myDrawerState extends State<myDrawer> {
                       color: Colors.white,
                     ),
                     textColor: Colors.white,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Stack(
+                              children: [
+                                Divider(
+                                  indent: (MediaQuery.of(context).size.width / 2) - 30,
+                                  endIndent: (MediaQuery.of(context).size.width / 2) - 30,
+                                  thickness: 3,
+                                ),
+                                Container(
+                                  child: ListView(
+                                      //TODO: #9 getClinics()
+                                      // children: getClinics(),
+                                      ),
+                                ),
+                              ],
+                            );
+                          });
+                    },
                   ),
                 ),
                 ListTile(
@@ -121,7 +143,9 @@ class _myDrawerState extends State<myDrawer> {
                     textAlign: TextAlign.left,
                   ),
                   textColor: Colors.white,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MedicineTracker()));
+                  },
                 ),
                 ListTile(
                   splashColor: Colors.transparent,

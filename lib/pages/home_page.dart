@@ -32,6 +32,31 @@ class _MyWidgetState extends State<HomeWidget> {
         height: MediaQuery.of(context).size.height + 100,
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: GoogleMap(
+          markers: {
+            Marker(
+              markerId: MarkerId('klinika 1'),
+              position: LatLng(41.40996208637048, 19.703387726015382),
+              infoWindow: InfoWindow(
+                title: "Klinika 1",
+                snippet: "Klinika test",
+              ),
+              onTap: () {
+                // showModalBottomSheet(
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       return MarkerInfo();
+                //     });
+              },
+            ),
+            Marker(
+              markerId: MarkerId('klinika 2'),
+              position: LatLng(41.41231328517085, 19.7231566028525),
+              infoWindow: InfoWindow(
+                title: "Klinika 2",
+                snippet: "testtesttesttesttest",
+              ),
+            )
+          },
           myLocationEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
