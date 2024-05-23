@@ -11,6 +11,7 @@ import 'package:homecareconnect/components/text_field.dart';
 import 'package:homecareconnect/objects/clinic.dart';
 import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/signup.dart';
+import 'package:homecareconnect/validators.dart';
 
 class ClinicRegister extends StatefulWidget {
   const ClinicRegister({Key? key}) : super(key: key);
@@ -125,45 +126,55 @@ class _RegisterState extends State<ClinicRegister> {
                                         color: Colors.red,
                                       ));
                                     });
-                                await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
-                                  await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((c) {
-                                    var clinc = Clinic(c.user?.uid, passwordController.text.trim(), emails: ['${emailController.text.trim()}'], phoneNumbers: [phoneController.text.trim()]);
-                                    var usr = FirebaseAuth.instance.currentUser;
-                                    usr?.updateDisplayName('${clinicNameController.text.trim()}');
-                                    clinc.writeClinic();
-                                    Navigator.pop(context);
-                                  });
-                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
-                                }).catchError(
-                                  (e) {
-                                    //   showDialog<void>(
-                                    //     context: context,
-                                    //     barrierDismissible: false, // user must tap button!
-                                    //     builder: (BuildContext context) {
-                                    //       return AlertDialog(
-                                    //         title: const Text('AlertDialog Title'),
-                                    //         content: const SingleChildScrollView(
-                                    //           child: ListBody(
-                                    //             children: <Widget>[
-                                    //               Text('This is a demo alert dialog.'),
-                                    //               Text('Would you like to approve of this message?'),
-                                    //             ],
-                                    //           ),
-                                    //         ),
-                                    //         actions: <Widget>[
-                                    //           TextButton(
-                                    //             child: const Text('Approve'),
-                                    //             onPressed: () {
-                                    //               Navigator.of(context).pop();
-                                    //             },
-                                    //           ),
-                                    //         ],
-                                    //       );
-                                    //     },
-                                    //   );
-                                    Navigator.pop(context);
-                                  },
-                                );
+                                if (validateEmail(emailController.text.trim()) == null && validatePassword(passwordController.text.trim()) == null && phoneNumberValidator(emailController.text.trim()) == null) {
+                                  await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
+                                    await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((c) {
+                                      var clinc = Clinic(c.user?.uid, passwordController.text.trim(), emails: ['${emailController.text.trim()}'], phoneNumbers: [phoneController.text.trim()]);
+                                      var usr = FirebaseAuth.instance.currentUser;
+                                      usr?.updateDisplayName('${clinicNameController.text.trim()}');
+                                      clinc.writeClinic();
+                                      Navigator.pop(context);
+                                    });
+                                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
+                                  }).catchError(
+                                    (e) {
+                                      //   showDialog<void>(
+                                      //     context: context,
+                                      //     barrierDismissible: false, // user must tap button!
+                                      //     builder: (BuildContext context) {
+                                      //       return AlertDialog(
+                                      //         title: const Text('AlertDialog Title'),
+                                      //         content: const SingleChildScrollView(
+                                      //           child: ListBody(
+                                      //             children: <Widget>[
+                                      //               Text('This is a demo alert dialog.'),
+                                      //               Text('Would you like to approve of this message?'),
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //         actions: <Widget>[
+                                      //           TextButton(
+                                      //             child: const Text('Approve'),
+                                      //             onPressed: () {
+                                      //               Navigator.of(context).pop();
+                                      //             },
+                                      //           ),
+                                      //         ],
+                                      //       );
+                                      //     },
+                                      //   );
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                } else {
+                                  if (validateEmail(emailController.text.trim()) != null) {
+                                    //TODO: #5 incorrect email address pop up
+                                  } else if (validatePassword(passwordController.text.trim()) == null) {
+                                    //TODO: #7 incorrect password pop up
+                                  } else if (phoneNumberValidator(emailController.text.trim()) == null) {
+                                    //TODO: #8 incorrect phone number pop up
+                                  }
+                                }
                               },
                             ),
 
