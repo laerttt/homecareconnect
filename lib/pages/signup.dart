@@ -114,7 +114,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
+      drawer: myDrawer(''),
       backgroundColor: Colors.grey[100],
       appBar: getAppBar("Sign Up "),
       body: SingleChildScrollView(

@@ -30,7 +30,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
 
   Scaffold profileScaffold(myUser.User? currentUser, BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
+      drawer: myDrawer('pfp'),
       appBar: getAppBar('My Profile'),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -10,8 +10,8 @@ class Clinic {
   String? clinicName;
   List<Nurse>? employees;
   LatLng adress;
-  List<String?>? emails;
-  List<String?>? phoneNumbers;
+  List<String?> emails = [];
+  List<String?> phoneNumbers = [];
   final int? minOnDuty = 10;
 
   Clinic(
@@ -19,8 +19,8 @@ class Clinic {
     this.clinicName, {
     this.employees = null,
     this.adress = const LatLng(0, 0),
-    this.emails = null,
-    this.phoneNumbers = null,
+    required this.emails,
+    required this.phoneNumbers,
   }) {}
   Clinic.testDummy()
       : this(
@@ -158,8 +158,6 @@ class Clinic {
             phoneNumber: f.child('Contact').child('phone').value.toString().trim()),
       );
     }
-    var n = employees[0];
-    log(n.toJson().toString(), name: 'aaaaaaaaaaaaaaaaa');
     return Clinic(
       id,
       clinicName,

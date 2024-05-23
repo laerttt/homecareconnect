@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -9,69 +8,58 @@ import '../components/text_field.dart';
 import '../objects/clinic.dart';
 import '../objects/nurse.dart';
 
-
 class clinic_main extends StatefulWidget {
-    clinic_main({Key? key}) : super(key: key);
-  final List<bool> onDuty=[];
+  clinic_main({Key? key}) : super(key: key);
+  final List<bool> onDuty = [];
 
   @override
   State<clinic_main> createState() => ClinicMain();
 }
 
-class ClinicMain extends State<clinic_main>{
+class ClinicMain extends State<clinic_main> {
   void initState() {
     super.initState();
     getAllNurses(clinic);
   }
+
   var NurseContainers = <Container>[];
 
   Clinic clinic = Clinic.testDummy();
-  getClinic(){
-
+  getClinic() {
     ///TODO active clinic from database
     //
-
-
   }
 
-  getAllNurses(Clinic clinic){
-      for (int i = 0; i < clinic.employees!.length; i++) {
-        print(i);
-        print("i");
-        Nurse? nurse= clinic.employees?[i];
-        widget.onDuty.add(nurse!.onDuty);
-        NurseContainers.add(nursePage(nurse,i)) ;
-
-
-      }
+  getAllNurses(Clinic clinic) {
+    for (int i = 0; i < clinic.employees!.length; i++) {
+      print(i);
+      print("i");
+      Nurse? nurse = clinic.employees?[i];
+      widget.onDuty.add(nurse!.onDuty);
+      NurseContainers.add(nursePage(nurse, i));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
-      appBar: getAppBar(
-          ""
-      ),
+      drawer: myDrawer('clinicmain'),
+      appBar: getAppBar(""),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Expanded(
             child: ListView.builder(
               itemCount: NurseContainers.length,
               itemBuilder: (BuildContext conteext, int index) {
-
                 return NurseContainers[index];
               },
             ),
           ),
-
         ],
       ),
     );
   }
-
 
   nurseAnalytics() {
     return showDialog(
@@ -86,112 +74,91 @@ class ClinicMain extends State<clinic_main>{
             child: Container(
               height: 360,
               decoration: BoxDecoration(
-                color:  Colors.white,
+                color: Colors.white,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Column(
-                children: [
-                  Container(
-
-                  )
-                ],
-
+                children: [Container()],
               ),
-
-
             ),
           );
         });
   }
 
-  Container nursePage(Nurse nurse,int index) {
-   String? Name=nurse.name;
-   // String? ClinicID=nurse.clinicID;
-   String? PhoneNumber=nurse.phoneNumber;
-   String? Surname= nurse.surname;
+  Container nursePage(Nurse nurse, int index) {
+    String? Name = nurse.name;
+    // String? ClinicID=nurse.clinicID;
+    String? PhoneNumber = nurse.phoneNumber;
+    String? Surname = nurse.surname;
 
     var issueNoteController = TextEditingController();
 
-    return  Container(
+    return Container(
       height: 300,
-      margin:
-      const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.redAccent),
-          borderRadius: BorderRadius.circular(9.0)),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
+      decoration: BoxDecoration(border: Border.all(color: Colors.redAccent), borderRadius: BorderRadius.circular(9.0)),
       padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                   "Name: "+ Name!,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Name: " + Name!,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Surname: " + Surname!,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              Text("Phone Number: " + PhoneNumber!, style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 8),
+              // Text(
+              //   "Clinic ID: "+ClinicID!,
+              //   style: const TextStyle(fontWeight: FontWeight.bold),
+              //   maxLines: 2,
+              //   overflow: TextOverflow.ellipsis,),
+              const SizedBox(height: 8),
+
+              Switch(
+                // This bool value toggles the switch.
+                value: widget.onDuty[index],
+                activeColor: Colors.redAccent,
+                onChanged: (bool value) {
+                  // This is called when the user toggles the switch.
+                  setState(() {
+                    widget.onDuty[index] = value;
+                  });
+                },
+              ),
+
+              TextButton(
+                onPressed: nurseAnalytics,
+                child: Text(
+                  "See nurse analytics",
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.blue,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Surname: "+Surname!,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,),
-                  const SizedBox(height: 8),
-                  Text(
-                      "Phone Number: "+PhoneNumber!,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis
-                  ),
-                  const SizedBox(height: 8),
-                  // Text(
-                  //   "Clinic ID: "+ClinicID!,
-                  //   style: const TextStyle(fontWeight: FontWeight.bold),
-                  //   maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,),
-                  const SizedBox(height: 8),
-
-                  Switch(
-                    // This bool value toggles the switch.
-                    value: widget.onDuty[index],
-                    activeColor: Colors.redAccent,
-                    onChanged: (bool value) {
-                      // This is called when the user toggles the switch.
-                      setState(() {
-                        widget.onDuty[index] = value ;
-                      });
-                    },
-                  ),
-
-
-
-                  TextButton(
-                    onPressed: nurseAnalytics ,
-                    child: Text("See nurse analytics",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.blue,
-                      ),) ,
-
-                  ),
-
-
-
-
-                ],
-              )),
-
+                ),
+              ),
+            ],
+          )),
         ],
       ),
     );
   }
-
 
   // Widget _DialogWithTextField(BuildContext context) => Container(
   //   height: 360,
@@ -299,6 +266,4 @@ class ClinicMain extends State<clinic_main>{
   //     ],
   //   ),
   // );
-
 }
-

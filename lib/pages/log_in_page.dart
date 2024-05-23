@@ -25,7 +25,7 @@ class _MyLogInWidgetState extends State<MyLogInWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
+      drawer: myDrawer(''),
       appBar: getAppBarBlack('Log In'),
       backgroundColor: Colors.grey[100],
       body: SafeArea(

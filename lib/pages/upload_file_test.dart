@@ -14,7 +14,7 @@ class _myTestFilePickerState extends State<myTestFilePicker> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar('test'),
-      drawer: myDrawer(),
+      drawer: myDrawer('fliepick'),
     );
   }
 }
