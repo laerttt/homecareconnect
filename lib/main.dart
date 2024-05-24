@@ -26,9 +26,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User user = User.testDummy();
+    log('${user.gender}');
     user.writeUser();
     Clinic clinic = Clinic.testDummy();
+    Clinic clinic1 = Clinic.testDummy1();
+    ;
     clinic.writeClinic();
+    clinic1.writeClinic();
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -39,6 +43,6 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Apple-Gothic',
         ),
-        home: clinic_main());
+        home: AuthPage());
   }
 }
