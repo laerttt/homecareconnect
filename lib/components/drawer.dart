@@ -155,7 +155,8 @@ class _myDrawerState extends State<myDrawer> {
                                               ListTile(
                                                   title: Text('${i.clinicName}'),
                                                   onTap: () {
-                                                    createPolylines((getCurrentPosition() as LatLng).latitude, (getCurrentPosition() as LatLng).longitude, i.adress.latitude, i.adress.longitude);
+                                                    createPolylines(41.404299, 19.707313, i.adress.latitude, i.adress.longitude);
+                                                    // Navigator.pop(context);
                                                   })
                                           ],
                                         ),
