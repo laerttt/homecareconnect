@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../components/app_bar.dart';
@@ -7,6 +8,7 @@ import '../components/drawer.dart';
 import '../components/text_field.dart';
 import '../objects/clinic.dart';
 import '../objects/nurse.dart';
+import '../objects/user.dart';
 
 class clinic_main extends StatefulWidget {
     clinic_main({Key? key}) : super(key: key);
@@ -16,21 +18,13 @@ class clinic_main extends StatefulWidget {
 }
 
 class ClinicMain extends State<clinic_main> {
-  void initState() {
-    super.initState();
-    getAllNurses(clinic);
 
-
-  }
 
   var NurseContainers = <Container>[];
   final List<bool> onDuty=[];
 
-  Clinic clinic = Clinic.testDummy();
-  getClinic() {
-    ///TODO active clinic from database
-    //
-  }
+
+
   getAllNurses(Clinic clinic){
       for (int i = 0; i < clinic.employees!.length; i++) {
         print(i);
@@ -44,25 +38,46 @@ class ClinicMain extends State<clinic_main> {
 
   @override
   Widget build(BuildContext context) {
+    print("before");
+    final clinic = FirebaseAuth.instance.currentUser!;
+    print("after");
+    return FutureBuilder(
+        future: Clinic.toObject(clinic.uid),
+        builder: (BuildContext context, AsyncSnapshot<Clinic> snapshot) {
+          if (!snapshot.hasData) return Container(); // still loading
+          // alternatively use snapshot.connectionState != ConnectionState.done
+          final Clinic? clinic = snapshot.data;
+          print('PRINTCHECK');
+          print(clinic);
+
+          getAllNurses(clinic!);
+          print(clinic);
+
+          return mainClinicScaffold(clinic!, context);
+          // return a widget here (you have to return a widget to the builder)
+        });
+  }
+
+  Scaffold mainClinicScaffold(Clinic clinic,BuildContext context) {
     return Scaffold(
-      drawer: myDrawer('clinicmain'),
-      appBar: getAppBar(
-          "Homepage"
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: NurseContainers.length,
-              itemBuilder: (BuildContext conteext, int index) {
-                return NurseContainers[index];
-              },
-            ),
+    drawer: myDrawer('clinicmain'),
+    appBar: getAppBar(
+        "Homepage"
+    ),
+    body: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: clinic.employees!.length,
+            itemBuilder: (BuildContext conteext, int index) {
+              return NurseContainers[index];
+            },
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
   }
 
   nurseAnalytics() {
@@ -136,7 +151,7 @@ class ClinicMain extends State<clinic_main> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                      "Is nurse on duty: "+ clinic.employees![index].onDuty.toString(),
+                      "Is nurse on duty: "+ nurse.onDuty.toString(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis
@@ -145,12 +160,12 @@ class ClinicMain extends State<clinic_main> {
 
                   IconButton(
                       onPressed:(){
-                        if(clinic.employees?[index].onDuty==true){
-                          clinic.employees?[index].onDuty= false;
+                        if(nurse.onDuty==true){
+                         nurse.onDuty= false;
                         }else{
-                          clinic.employees?[index].onDuty=true;
+                          nurse.onDuty=true;
                         }
-                        print(clinic.employees?[index].onDuty);
+                        print(nurse.onDuty);
 
                       }
 

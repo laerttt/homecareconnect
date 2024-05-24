@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:homecareconnect/components/markers.dart';
 import 'package:homecareconnect/dark_map_style.dart';
 import 'dart:developer';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
