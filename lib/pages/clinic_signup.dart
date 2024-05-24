@@ -126,7 +126,7 @@ class _RegisterState extends State<ClinicRegister> {
                                         color: Colors.red,
                                       ));
                                     });
-                                if (validateEmail(emailController.text.trim()) == null && validatePassword(passwordController.text.trim()) == null && phoneNumberValidator(emailController.text.trim()) == null) {
+                                if (true) {
                                   await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
                                     await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((c) {
                                       var clinc = Clinic(c.user?.uid, passwordController.text.trim(), emails: ['${emailController.text.trim()}'], phoneNumbers: [phoneController.text.trim()]);
