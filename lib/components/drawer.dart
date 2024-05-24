@@ -1,27 +1,36 @@
 // ignore: unused_import
 import 'dart:developer';
 import 'dart:ui';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:homecareconnect/current_location.dart';
+import 'package:homecareconnect/objects/clinic.dart';
 import 'package:homecareconnect/pages/log_in_page.dart';
 import 'package:homecareconnect/pages/home_page.dart';
 import 'package:homecareconnect/pages/medicine_tracker.dart';
 import 'package:homecareconnect/pages/profile_page.dart';
 import 'package:homecareconnect/pages/upload_file_test.dart';
+import 'package:homecareconnect/poly.dart';
+import 'package:homecareconnect/pages/home_page.dart';
 
 import '../pages/signup.dart';
 
 class myDrawer extends StatefulWidget {
-  const myDrawer({super.key});
+  final String s;
+  myDrawer(this.s, {super.key});
 
   @override
-  State<myDrawer> createState() => _myDrawerState();
+  State<myDrawer> createState() => _myDrawerState(s);
 }
 
 class _myDrawerState extends State<myDrawer> {
   late Color color;
+  late String? pageName;
 
+  _myDrawerState(this.pageName);
   @override
   void initState() {
     super.initState();
@@ -107,24 +116,56 @@ class _myDrawerState extends State<myDrawer> {
                     textColor: Colors.white,
                     onTap: () {
                       Navigator.pop(context);
+                      if (this.pageName != 'map') Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
+                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
                       showModalBottomSheet(
                           context: context,
                           builder: (BuildContext context) {
-                            return Stack(
-                              children: [
-                                Divider(
-                                  indent: (MediaQuery.of(context).size.width / 2) - 30,
-                                  endIndent: (MediaQuery.of(context).size.width / 2) - 30,
-                                  thickness: 3,
-                                ),
-                                Container(
-                                  child: ListView(
-                                      //TODO: #9 getClinics()
-                                      // children: getClinics(),
+                            late final ref = FirebaseDatabase.instance.ref();
+                            return FutureBuilder(
+                                future: ref.child('clinics').get(),
+                                builder: (BuildContext context, AsyncSnapshot<DataSnapshot> snapshot) {
+                                  List<Clinic> list = [];
+                                  if (!snapshot.hasData)
+                                    return Container(
+                                      color: Colors.grey,
+                                    ); // still loading
+                                  final c = snapshot.data;
+                                  for (var i in c!.children) {
+                                    list.add(Clinic(
+                                      i.key,
+                                      i.child('Clinic Name').value.toString().trim(),
+                                      adress: LatLng(double.parse(i.child('Adress').child('lat').value.toString()), double.parse(i.child('Adress').child('lon').value.toString())),
+                                      emails: [],
+                                      phoneNumbers: [],
+                                      employees: [],
+                                    ));
+                                  }
+                                  return Stack(
+                                    children: [
+                                      Divider(
+                                        indent: (MediaQuery.of(context).size.width / 2) - 30,
+                                        endIndent: (MediaQuery.of(context).size.width / 2) - 30,
+                                        thickness: 3,
                                       ),
-                                ),
-                              ],
-                            );
+                                      Container(
+                                        child: ListView(
+                                          children: [
+                                            for (var i in list)
+                                              ListTile(
+                                                  title: Text('${i.clinicName}'),
+                                                  onTap: () {
+                                                    createPolylines(41.404299, 19.707313, i.adress.latitude, i.adress.longitude);
+                                                    // Navigator.pop(context);
+                                                  })
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+
+                            // return a widget here (you have to return a widget to the builder)
                           });
                     },
                   ),
@@ -180,25 +221,11 @@ class _myDrawerState extends State<myDrawer> {
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
                   onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => myTestFilePicker()));
-                  },
-                ),
-                ListTile(
-                  splashColor: Colors.transparent,
-                  title: const Text(
-                    'Settings',
-                    style: TextStyle(fontWeight: FontWeight.w900),
-                    textAlign: TextAlign.left,
-                  ),
-                  leading: const Icon(
-                    Icons.settings,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                  titleAlignment: ListTileTitleAlignment.center,
-                  textColor: Colors.white,
-                  onTap: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyLogInWidget()));
+                    if (this.pageName == 'filepick') {
+                      Navigator.pop(context);
+                    } else {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => myTestFilePicker()));
+                    }
                   },
                 ),
                 ListTile(
@@ -208,7 +235,8 @@ class _myDrawerState extends State<myDrawer> {
                   titleAlignment: ListTileTitleAlignment.center,
                   textColor: Colors.white,
                   onTap: () {
-                    if (context == HomeWidget()) {
+                    if (this.pageName == 'map') {
+                      Navigator.pop(context);
                     } else {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
                     }

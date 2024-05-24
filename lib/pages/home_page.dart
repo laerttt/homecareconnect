@@ -1,13 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
+import 'package:homecareconnect/components/markers.dart';
 import 'package:homecareconnect/dark_map_style.dart';
 import 'dart:developer';
-
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:homecareconnect/components/app_bar.dart';
 import 'package:homecareconnect/components/drawer.dart';
+import 'package:homecareconnect/poly.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -25,38 +27,30 @@ class _MyWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: getMarkers(context),
+        builder: (BuildContext context, AsyncSnapshot<Set<Marker>> snapshot) {
+          if (!snapshot.hasData)
+            return Container(
+              color: Colors.grey,
+            ); // still loading
+          // alternatively use snapshot.connectionState != ConnectionState.done
+          final Set<Marker>? markers = snapshot.data;
+          return mapScaffold(context, markers);
+          // return a widget here (you have to return a widget to the builder)
+        });
+  }
+
+  Scaffold mapScaffold(BuildContext context, markers) {
     return Scaffold(
       appBar: getAppBar('Map'),
-      drawer: myDrawer(),
+      drawer: myDrawer('map'),
       body: Container(
         height: MediaQuery.of(context).size.height + 100,
         padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: GoogleMap(
-          markers: {
-            Marker(
-              markerId: MarkerId('klinika 1'),
-              position: LatLng(41.40996208637048, 19.703387726015382),
-              infoWindow: InfoWindow(
-                title: "Klinika 1",
-                snippet: "Klinika test",
-              ),
-              onTap: () {
-                // showModalBottomSheet(
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       return MarkerInfo();
-                //     });
-              },
-            ),
-            Marker(
-              markerId: MarkerId('klinika 2'),
-              position: LatLng(41.41231328517085, 19.7231566028525),
-              infoWindow: InfoWindow(
-                title: "Klinika 2",
-                snippet: "testtesttesttesttest",
-              ),
-            )
-          },
+          polylines: Set<Polyline>.of(polylines.values),
+          markers: markers,
           myLocationEnabled: true,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
@@ -102,6 +96,7 @@ class _MyWidgetState extends State<HomeWidget> {
       GoogleMapController controller = await _controller.future;
       await controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       setState(() {});
+      return target;
     });
   }
 }

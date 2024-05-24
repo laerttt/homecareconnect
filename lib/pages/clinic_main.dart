@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -9,38 +8,35 @@ import '../components/text_field.dart';
 import '../objects/clinic.dart';
 import '../objects/nurse.dart';
 
-
 class clinic_main extends StatefulWidget {
     clinic_main({Key? key}) : super(key: key);
-  final List<bool> onDuty=[];
 
   @override
   State<clinic_main> createState() => ClinicMain();
 }
 
-class ClinicMain extends State<clinic_main>{
+class ClinicMain extends State<clinic_main> {
   void initState() {
     super.initState();
     getAllNurses(clinic);
+
+
   }
+
   var NurseContainers = <Container>[];
+  final List<bool> onDuty=[];
 
   Clinic clinic = Clinic.testDummy();
-  getClinic(){
-
+  getClinic() {
     ///TODO active clinic from database
     //
-
-
   }
-
   getAllNurses(Clinic clinic){
       for (int i = 0; i < clinic.employees!.length; i++) {
         print(i);
         print("i");
         Nurse? nurse= clinic.employees?[i];
-        widget.onDuty.add(nurse!.onDuty);
-        NurseContainers.add(nursePage(nurse,i)) ;
+        NurseContainers.add(nursePage(nurse!,i)) ;
 
 
       }
@@ -49,29 +45,25 @@ class ClinicMain extends State<clinic_main>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
+      drawer: myDrawer('clinicmain'),
       appBar: getAppBar(
-          ""
+          "Homepage"
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Expanded(
             child: ListView.builder(
               itemCount: NurseContainers.length,
               itemBuilder: (BuildContext conteext, int index) {
-
                 return NurseContainers[index];
               },
             ),
           ),
-
         ],
       ),
     );
   }
-
 
   nurseAnalytics() {
     return showDialog(
@@ -86,45 +78,40 @@ class ClinicMain extends State<clinic_main>{
             child: Container(
               height: 360,
               decoration: BoxDecoration(
-                color:  Colors.white,
+                color: Colors.white,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Column(
-                children: [
-                  Container(
-
-                  )
-                ],
-
+                children: [Container()],
               ),
-
-
             ),
           );
         });
   }
 
-  Container nursePage(Nurse nurse,int index) {
-   String? Name=nurse.name;
-   // String? ClinicID=nurse.clinicID;
-   String? PhoneNumber=nurse.phoneNumber;
-   String? Surname= nurse.surname;
+  Container nursePage(Nurse nurse, int index) {
+    String? Name = nurse.name;
+    // String? ClinicID=nurse.clinicID;
+    String? PhoneNumber = nurse.phoneNumber;
+    String? Surname = nurse.surname;
 
     var issueNoteController = TextEditingController();
 
     return  Container(
-      height: 300,
+
+      height: 180,
       margin:
       const EdgeInsets.symmetric(horizontal: 16, vertical: 8.0),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.redAccent),
-          borderRadius: BorderRadius.circular(9.0)),
+      decoration:  BoxDecoration(
+          border: Border.all(color: const Color(0xFFE0E0E0)),
+          borderRadius: BorderRadius.circular(8.0)),
       padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Expanded(
               child: Column(
+
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -148,38 +135,30 @@ class ClinicMain extends State<clinic_main>{
                       overflow: TextOverflow.ellipsis
                   ),
                   const SizedBox(height: 8),
-                  // Text(
-                  //   "Clinic ID: "+ClinicID!,
-                  //   style: const TextStyle(fontWeight: FontWeight.bold),
-                  //   maxLines: 2,
-                  //   overflow: TextOverflow.ellipsis,),
+                  Text(
+                      "Is nurse on duty: "+ clinic.employees![index].onDuty.toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis
+                  ),
                   const SizedBox(height: 8),
 
-                  Switch(
-                    // This bool value toggles the switch.
-                    value: widget.onDuty[index],
-                    activeColor: Colors.redAccent,
-                    onChanged: (bool value) {
-                      // This is called when the user toggles the switch.
-                      setState(() {
-                        widget.onDuty[index] = value ;
-                      });
-                    },
-                  ),
+                  IconButton(
+                      onPressed:(){
+                        if(clinic.employees?[index].onDuty==true){
+                          clinic.employees?[index].onDuty= false;
+                        }else{
+                          clinic.employees?[index].onDuty=true;
+                        }
+                        print(clinic.employees?[index].onDuty);
+
+                      }
+
+                      , icon:Icon(Icons.check) ),
 
 
 
-                  TextButton(
-                    onPressed: nurseAnalytics ,
-                    child: Text("See nurse analytics",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.blue,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Colors.blue,
-                      ),) ,
 
-                  ),
 
 
 
@@ -187,11 +166,11 @@ class ClinicMain extends State<clinic_main>{
                 ],
               )),
 
+
         ],
       ),
     );
   }
-
 
   // Widget _DialogWithTextField(BuildContext context) => Container(
   //   height: 360,
@@ -299,6 +278,4 @@ class ClinicMain extends State<clinic_main>{
   //     ],
   //   ),
   // );
-
 }
-
