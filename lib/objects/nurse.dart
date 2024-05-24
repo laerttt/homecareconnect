@@ -7,7 +7,7 @@ class Nurse {
   String? name;
   String? surname;
   int? age;
-  bool onDuty= false;
+  bool onDuty = false;
   dynamic gender;
   String? email;
   String? phoneNumber;
@@ -20,11 +20,11 @@ class Nurse {
   Nurse.testDummy([int n = 0]) : this('nurseID $n', name: 'petrit $n', surname: 'hoxha $n', age: 32, email: 'petrithoxha$n@gmail.com', phoneNumber: '069696969$n', license: 'licensum nvitin 200$n', gender: Genders.male);
   getGender() {
     switch (this.gender) {
-      case Genders.male:
+      case Genders.male || 'male':
         return 'male';
-      case Genders.female:
+      case Genders.female || 'female':
         return 'female';
-      case Genders.other:
+      case Genders.other || 'other':
         return 'other';
       default:
         return 'not specified';

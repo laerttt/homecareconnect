@@ -1,4 +1,3 @@
-
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -9,7 +8,6 @@ import '../components/text_field.dart';
 import '../objects/clinic.dart';
 import '../objects/nurse.dart';
 
-
 class clinic_main extends StatefulWidget {
     clinic_main({Key? key}) : super(key: key);
 
@@ -17,25 +15,22 @@ class clinic_main extends StatefulWidget {
   State<clinic_main> createState() => ClinicMain();
 }
 
-class ClinicMain extends State<clinic_main>{
+class ClinicMain extends State<clinic_main> {
   void initState() {
     super.initState();
     getAllNurses(clinic);
 
 
   }
+
   var NurseContainers = <Container>[];
   final List<bool> onDuty=[];
 
   Clinic clinic = Clinic.testDummy();
-  getClinic(){
-
+  getClinic() {
     ///TODO active clinic from database
     //
-
-
   }
-
   getAllNurses(Clinic clinic){
       for (int i = 0; i < clinic.employees!.length; i++) {
         print(i);
@@ -50,29 +45,25 @@ class ClinicMain extends State<clinic_main>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: myDrawer(),
+      drawer: myDrawer('clinicmain'),
       appBar: getAppBar(
           "Homepage"
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Expanded(
             child: ListView.builder(
               itemCount: NurseContainers.length,
               itemBuilder: (BuildContext conteext, int index) {
-
                 return NurseContainers[index];
               },
             ),
           ),
-
         ],
       ),
     );
   }
-
 
   nurseAnalytics() {
     return showDialog(
@@ -87,30 +78,23 @@ class ClinicMain extends State<clinic_main>{
             child: Container(
               height: 360,
               decoration: BoxDecoration(
-                color:  Colors.white,
+                color: Colors.white,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.all(Radius.circular(12)),
               ),
               child: Column(
-                children: [
-                  Container(
-
-                  )
-                ],
-
+                children: [Container()],
               ),
-
-
             ),
           );
         });
   }
 
-  Container nursePage(Nurse nurse,int index) {
-   String? Name=nurse.name;
-   // String? ClinicID=nurse.clinicID;
-   String? PhoneNumber=nurse.phoneNumber;
-   String? Surname= nurse.surname;
+  Container nursePage(Nurse nurse, int index) {
+    String? Name = nurse.name;
+    // String? ClinicID=nurse.clinicID;
+    String? PhoneNumber = nurse.phoneNumber;
+    String? Surname = nurse.surname;
 
     var issueNoteController = TextEditingController();
 
@@ -127,6 +111,7 @@ class ClinicMain extends State<clinic_main>{
         children: [
           Expanded(
               child: Column(
+
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -181,11 +166,11 @@ class ClinicMain extends State<clinic_main>{
                 ],
               )),
 
+
         ],
       ),
     );
   }
-
 
   // Widget _DialogWithTextField(BuildContext context) => Container(
   //   height: 360,
@@ -293,6 +278,4 @@ class ClinicMain extends State<clinic_main>{
   //     ],
   //   ),
   // );
-
 }
-

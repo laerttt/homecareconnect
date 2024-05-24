@@ -12,13 +12,11 @@ Future<User> toObject(uid) async {
   late final ref = FirebaseDatabase.instance.ref();
   final snapshot = await ref.child('users/$uid').get();
   (snapshot.exists) ? json = (snapshot.value as Map) : log('${snapshot.exists}', name: 'snapshot.exists status');
-  log(((json['FullName'])['Name']).toString());
   var id = uid;
   var name = ((json['FullName'])['Name']).toString();
   var surname = ((json['FullName'])['Surname']).toString();
   var age = json['Age'].toString();
   var gender = json['Gender'].toString();
-  log(json['Bloodtype'].toString());
   var bloodtype = json['Bloodtype'].toString();
   var address = json['Address'].toString();
   var email = ((json['Contact'])['E-mail']).toString();

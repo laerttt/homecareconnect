@@ -26,7 +26,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User user = User.testDummy();
-    log('${user.gender}');
     user.writeUser();
     Clinic clinic = Clinic.testDummy();
     clinic.writeClinic();
