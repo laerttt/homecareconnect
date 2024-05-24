@@ -1,6 +1,7 @@
 // ignore: unused_import
 import 'dart:developer';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -240,6 +241,16 @@ class _myDrawerState extends State<myDrawer> {
                     } else {
                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomeWidget()));
                     }
+                  },
+                ),
+                ListTile(
+                  splashColor: Colors.transparent,
+                  title: const Text('Signout', style: TextStyle(fontWeight: FontWeight.w900), textAlign: TextAlign.left),
+                  leading: const Icon(Icons.map, size: 25, color: Colors.white),
+                  titleAlignment: ListTileTitleAlignment.center,
+                  textColor: Colors.white,
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
                   },
                 ),
               ],

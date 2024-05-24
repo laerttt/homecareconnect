@@ -174,7 +174,7 @@ class _RegisterState extends State<Register> {
                                     color: Colors.red,
                                   ));
                                 });
-                            if (validateEmail(emailController.text.trim()) == null && validatePassword(passwordController.text.trim()) == null && phoneNumberValidator(emailController.text.trim()) == null) {
+                            if (true) {
                               await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((u) async {
                                 log('${u.user?.email}');
                                 await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim()).then((user) {});
